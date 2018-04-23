@@ -1,0 +1,53 @@
+image: maven:3.5.3-jdk-8
+
+stages:
+    - validate
+    - compile
+    - test
+    - verify
+    - deploy
+    
+Validate:
+    stage: validate
+    script:
+        - mvn validate
+    tags:
+        - validate
+
+Compile:
+    stage: compile
+    script:
+        - mvn compile
+    except:
+        - dev
+        - master
+    tags:
+        - validate
+
+Test:
+    stage: test
+    script:
+        - mvn test
+    only:
+        - dev
+    tags:
+        - test
+    
+Verify:
+    stage: verify
+    script:
+        - mvn verify
+    only:
+        - dev
+        - master
+    tags:
+        - verify
+
+Deploy:
+    stage: deploy
+    script:
+        - mvn clean deploy
+    only:
+        - master
+    tags:
+        - deploy
