@@ -1,0 +1,33 @@
+
+# Maven
+target/
+*.releaseBackup
+*.properties
+
+# Compiled class file
+*.class
+
+# Classpath
+.classpath
+
+# Log file
+*.log
+log/
+logs/
+
+# Package Files
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Eclipse
+.project
+.settings/
+
+# Intellij IDEA
+.idea/
+*.ipr
+*.iml
