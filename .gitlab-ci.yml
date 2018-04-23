@@ -22,7 +22,7 @@ Compile:
         - dev
         - master
     tags:
-        - validate
+        - compile
 
 Test:
     stage: test
