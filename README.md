@@ -32,7 +32,9 @@ Development of an IoT framework for stream based analysis of sensor data. DBPRO,
  
 ## Authors
 
-* TODO
+* **Anton Rudacov** - [@antonrud](https://github.com/antonrud)
+* **Janine Schulte** - [@janineschulte](https://gitlab.tubit.tu-berlin.de/janineschulte)
+* **Sven Hellweg** - [@hellweg.sven](https://gitlab.tubit.tu-berlin.de/hellweg.sven)
  
  
 ## License
