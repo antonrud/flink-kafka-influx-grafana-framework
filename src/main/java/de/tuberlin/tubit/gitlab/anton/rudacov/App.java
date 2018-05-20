@@ -1,5 +1,8 @@
 package de.tuberlin.tubit.gitlab.anton.rudacov;
 
+import org.apache.commons.fileupload.util.Streams;
+import org.glassfish.grizzly.streams.Stream;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -14,8 +17,15 @@ public class App {
     public static void main(String[] args) {
         App.log('i',"Yay! App started!");
 
+        for(String str : args){
+            System.out.println(str);
+        }
+
         /* Starting data generator */
         (new Thread(new DataGenerator(DATA_PATH))).start();
+
+        /* Starting Flink consumer */
+        (new Thread(new FlinkConsumer(args))).start();
 
     }
 

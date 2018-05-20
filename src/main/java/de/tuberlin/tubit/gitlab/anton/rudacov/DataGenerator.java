@@ -20,11 +20,10 @@ public class DataGenerator implements Runnable {
 
         Stream<String> dataStream = getDataStream(dataPath);
 
-        dataStream.forEach(System.out::println);
 
         while (!Thread.currentThread().isInterrupted()) {
 
-            
+
             Thread.currentThread().interrupt();
         }
     }
