@@ -1,6 +1,9 @@
 package de.tuberlin.tubit.gitlab.anton.rudacov;
 
-import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer08;
+import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer011;
 
 import java.util.Properties;
 
@@ -25,10 +28,12 @@ public class FlinkConsumer implements Runnable {
 
     public void consume() throws Exception {
 
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+
         Properties properties = new Properties();
         properties.setProperty("bootstrap.servers", "localhost:9092");
         properties.setProperty("group.id", "test");
-        DataStream<String> stream = env.addSource(new FlinkKafkaConsumer08<>("topic", new SimpleStringSchema(), properties));
+        DataStream<String> stream = env.addSource(new FlinkKafkaConsumer011<>("topic", new SimpleStringSchema(), properties));
     }
 
     @Override
