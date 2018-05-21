@@ -1,4 +1,4 @@
-[![build status](https://gitlab.tubit.tu-berlin.de/anton.rudacov/DBPRO-IoT-Framework/badges/dev/build.svg)](https://gitlab.tubit.tu-berlin.de/anton.rudacov/DBPRO-IoT-Framework/commits/dev)
+[![build status](https://gitlab.tubit.tu-berlin.de/anton.rudacov/DBPRO-IoT-Framework/badges/dev/build.svg)](https://gitlab.tubit.tu-berlin.de/anton.rudacov/DBPRO-IoT-Framework/commits/dev)  
 
 [![coverage report](https://gitlab.tubit.tu-berlin.de/anton.rudacov/DBPRO-IoT-Framework/badges/dev/coverage.svg)](https://gitlab.tubit.tu-berlin.de/anton.rudacov/DBPRO-IoT-Framework/commits/dev)
 
@@ -22,13 +22,19 @@ Development of an IoT framework for stream based analysis of sensor data. DBPRO,
  
 ## Built With
 
-* [GitLab](https://about.gitlab.com/) - Git repository manager, wiki, issue tracking and CI/CD
+* [Kafka](https://kafka.apache.org/) - distributed streaming platform
+* [Apache Flink](https://ci.apache.org/projects/flink/flink-docs-stable/) - data processing engine
+* [InfluxDB](https://www.influxdata.com/) - time-series data storage
+* [Grafana](https://grafana.com/) - time series analytics platform
 * [Maven](https://maven.apache.org/) - Build automation tool and dependency management
-* more TODO
+* [GitLab](https://about.gitlab.com/) - Git repository manager, wiki, issue tracking and CI/CD
+* [Docker](https://www.docker.com/) - Testing and CI environment (container platform)
  
 ## Authors
 
-* TODO
+* **Anton Rudacov** - [@antonrud](https://github.com/antonrud)
+* **Janine Schulte** - [@janineschulte](https://gitlab.tubit.tu-berlin.de/janineschulte)
+* **Sven Hellweg** - [@hellweg.sven](https://gitlab.tubit.tu-berlin.de/hellweg.sven)
  
  
 ## License
