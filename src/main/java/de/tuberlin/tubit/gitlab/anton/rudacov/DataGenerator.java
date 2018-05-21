@@ -1,15 +1,26 @@
-/*package de.tuberlin.tubit.gitlab.anton.rudacov;
+package de.tuberlin.tubit.gitlab.anton.rudacov;
 
+import org.apache.flink.api.common.serialization.SerializationSchema;
+import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer011;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer011;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Properties;
 import java.util.stream.Stream;
 
 public class DataGenerator implements Runnable {
 
-     Standart args set:
+     /*Standart args set:
     --topic
     test
     --bootstrap.servers
     localhost:9092
-
+*/
 
     String[] args;
     private String dataPath;
@@ -23,13 +34,12 @@ public class DataGenerator implements Runnable {
         Stream<String> dataStream = getDataStream(dataPath);
 
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        ParameterTool parameterTool = ParameterTool.fromArgs(args);
-        DataStream<String> messageStream = env.addSource(new SimpleStringGenerator());
 
-        // write stream to Kafka
-        messageStream.addSink(new KafkaSink(parameterTool.getRequired("bootstrap.servers"),
-                parameterTool.getRequired("topic"),
-                new SimpleStringSchema()));
+        Properties properties = new Properties();
+        properties.setProperty("bootstrap.servers", "localhost:9092");
+        DataStream<String> stream = env.readTextFile(dataPath);
+
+        stream.addSink(new FlinkKafkaProducer011<String>("localhost:9092","test", new SimpleStringSchema()));
 
         env.execute();
     }
@@ -56,25 +66,4 @@ public class DataGenerator implements Runnable {
             e.printStackTrace();
         }
     }
-
-    public static class SimpleStringGenerator implements SourceFunction<String> {
-        private static final long serialVersionUID = 2174904787118597072L;
-        boolean running = true;
-        long i = 0;
-
-        @Override
-        public void run(SourceFunction.SourceContext<String> ctx) throws Exception {
-            while (running) {
-                ctx.collect("element-" + (i++));
-                Thread.sleep(10);
-            }
-        }
-
-        @Override
-        public void cancel() {
-            running = false;
-        }
-    }
-
 }
-*/
