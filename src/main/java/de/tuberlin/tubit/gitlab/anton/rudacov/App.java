@@ -20,7 +20,7 @@ public class App {
         }
 
         /* Starting data generator */
-        //(new Thread(new DataGenerator(DATA_PATH))).start();
+        (new Thread(new DataGenerator(DATA_PATH))).start();
 
         /* Starting Flink consumer */
         (new Thread(new FlinkConsumer(args))).start();

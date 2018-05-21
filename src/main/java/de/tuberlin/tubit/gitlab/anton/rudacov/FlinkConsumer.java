@@ -32,10 +32,13 @@ public class FlinkConsumer implements Runnable {
 
         Properties properties = new Properties();
         properties.setProperty("bootstrap.servers", "localhost:9092");
-        properties.setProperty("group.id", "test");
-        DataStream<String> stream = env.addSource(new FlinkKafkaConsumer011<>("test", new SimpleStringSchema(), properties));
 
-        stream.rebalance().map(s -> "Kafka and Flink says: " + s).print();
+        FlinkKafkaConsumer011<String> dataConsumer = new FlinkKafkaConsumer011<String>("test", new SimpleStringSchema(), properties);
+        dataConsumer.setStartFromEarliest();
+
+        DataStream<String> stream = env.addSource(dataConsumer);
+
+        stream.rebalance().map(s -> "I've got a line: " + s).print();
 
         env.execute();
     }
