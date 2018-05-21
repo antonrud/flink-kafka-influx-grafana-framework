@@ -1,15 +1,15 @@
-package de.tuberlin.tubit.gitlab.anton.rudacov;
+/*package de.tuberlin.tubit.gitlab.anton.rudacov;
 
 import java.util.stream.Stream;
 
 public class DataGenerator implements Runnable {
 
-    /* Standart args set:
+     Standart args set:
     --topic
     test
     --bootstrap.servers
     localhost:9092
-     */
+
 
     String[] args;
     private String dataPath;
@@ -77,3 +77,4 @@ public class DataGenerator implements Runnable {
     }
 
 }
+*/

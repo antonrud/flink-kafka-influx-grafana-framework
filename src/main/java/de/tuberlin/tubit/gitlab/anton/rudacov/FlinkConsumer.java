@@ -33,7 +33,11 @@ public class FlinkConsumer implements Runnable {
         Properties properties = new Properties();
         properties.setProperty("bootstrap.servers", "localhost:9092");
         properties.setProperty("group.id", "test");
-        DataStream<String> stream = env.addSource(new FlinkKafkaConsumer011<>("topic", new SimpleStringSchema(), properties));
+        DataStream<String> stream = env.addSource(new FlinkKafkaConsumer011<>("test", new SimpleStringSchema(), properties));
+
+        stream.rebalance().map(s -> "Kafka and Flink says: " + s).print();
+
+        env.execute();
     }
 
     @Override
