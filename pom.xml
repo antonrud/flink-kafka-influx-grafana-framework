@@ -2,13 +2,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.myorg.quickstart</groupId>
-    <artifactId>quickstart</artifactId>
-    <version>0.1</version>
+    <groupId>de.tuberlin.tubit.gitlab.anton.rudacov</groupId>
+    <artifactId>dbpro-iot-framework</artifactId>
+    <version>0.1.0</version>
     <packaging>jar</packaging>
 
-    <name>Flink Quickstart Job</name>
-    <url>http://www.myorganization.org</url>
+    <name>DBPRO IoT Framework</name>
+    <url>https://gitlab.tubit.tu-berlin.de/anton.rudacov/DBPRO-IoT-Framework</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
