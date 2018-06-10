@@ -18,7 +18,7 @@ public class FlinkConsumer implements Runnable {
 
     public void consume() throws Exception {
 
-        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
         Properties properties = new Properties();
         properties.setProperty("bootstrap.servers", "localhost:9092");
@@ -28,9 +28,6 @@ public class FlinkConsumer implements Runnable {
         //dataConsumer.setStartFromEarliest();
 
         DataStream<String> stream = env.addSource(dataConsumer);
-
-        DataStream<String> streamWithTimestamps = stream.assignTimestampsAndWatermarks(new);
-
 
         stream.rebalance().map(s -> "I've got a line: " + s).print();
 
