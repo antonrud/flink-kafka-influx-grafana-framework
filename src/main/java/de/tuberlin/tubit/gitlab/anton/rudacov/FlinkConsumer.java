@@ -9,20 +9,10 @@ import java.util.Properties;
 
 public class FlinkConsumer implements Runnable {
 
-    /* Standart args set:
-    --topic
-    test
-    --bootstrap.servers
-    localhost:9092
-    --zookeeper.connect
-    localhost:2181
-    --group.id
-    myGroup
-     */
-
     String[] args;
 
     public FlinkConsumer(String[] args) {
+
         this.args = args;
     }
 
@@ -34,9 +24,13 @@ public class FlinkConsumer implements Runnable {
         properties.setProperty("bootstrap.servers", "localhost:9092");
 
         FlinkKafkaConsumer011<String> dataConsumer = new FlinkKafkaConsumer011<String>("test", new SimpleStringSchema(), properties);
-        dataConsumer.setStartFromEarliest();
+
+        //dataConsumer.setStartFromEarliest();
 
         DataStream<String> stream = env.addSource(dataConsumer);
+
+        DataStream<String> streamWithTimestamps = stream.assignTimestampsAndWatermarks(new);
+
 
         stream.rebalance().map(s -> "I've got a line: " + s).print();
 
@@ -45,6 +39,8 @@ public class FlinkConsumer implements Runnable {
 
     @Override
     public void run() {
+        App.log('i', "Consumer starting...");
+
         try {
             consume();
         } catch (Exception e) {

@@ -15,10 +15,6 @@ public class App {
     public static void main(String[] args) {
         App.log('i', "Yay! App started!");
 
-        for (String str : args) {
-            System.out.println(str);
-        }
-
         /* Starting data generator */
         (new Thread(new DataGenerator(DATA_PATH))).start();
 
