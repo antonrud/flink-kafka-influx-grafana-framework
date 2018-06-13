@@ -29,9 +29,10 @@ public class DataGenerator implements Runnable {
 
         DataStream<String> stream = env.readTextFile(dataPath);
 
-        DataStream<String> streamWithTimestamps = stream.assignTimestampsAndWatermarks(new TimestampExtractor());
-
-        stream.addSink(new FlinkKafkaProducer011<String>("localhost:9092", "test", new SimpleStringSchema()));
+        //Extract, assign and cut timestamps from data
+        stream.assignTimestampsAndWatermarks(new TimestampExtractor())
+                .map(x -> x.split(";")[1])
+                .addSink(new FlinkKafkaProducer011<String>("localhost:9092", "test", new SimpleStringSchema()));
 
         env.execute();
     }
