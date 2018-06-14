@@ -21,15 +21,15 @@ public class FlinkConsumer implements Runnable {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
         Properties properties = new Properties();
-        properties.setProperty("bootstrap.servers", "localhost:9092");
+        properties.setProperty("bootstrap.servers", "217.163.23.24:9092");
 
-        FlinkKafkaConsumer011<String> dataConsumer = new FlinkKafkaConsumer011<String>("test", new SimpleStringSchema(), properties);
+        FlinkKafkaConsumer011<String> dataConsumer = new FlinkKafkaConsumer011<String>("morse", new SimpleStringSchema(), properties);
 
-        //dataConsumer.setStartFromEarliest();
+        dataConsumer.setStartFromEarliest();
 
         DataStream<String> stream = env.addSource(dataConsumer);
 
-        stream.rebalance().map(s -> "I've got a line: " + s).print();
+        stream.rebalance().map(s -> "Received message: " + s).print();
 
         env.execute();
     }

@@ -1,14 +1,22 @@
+
+# This is already configured on remote server.
+# You don't need to do these steps unless you would like to test something locally
+
 # start zookeeper server
 ./bin/zookeeper-server-start.sh ./config/zookeeper.properties
 
 # start broker
 ./bin/kafka-server-start.sh ./config/server.properties 
 
-# create topic “test”
- ./bin/kafka-topics.sh --create --topic test --zookeeper localhost:2181 --partitions 1 --replication-factor 1
+# create topic "morse"
+ ./bin/kafka-topics.sh --create --topic morse --zookeeper 217.163.23.24:2181 --partitions 1 --replication-factor 1
+
+
+
+# You only need this:
 
 # consume from the topic using the console producer
-./bin/kafka-console-consumer.sh --topic test --zookeeper localhost:2181
+./bin/kafka-console-consumer.sh --topic morse --zookeeper 217.163.23.24:2181
 
 # produce something into the topic (write something and hit enter)
-./bin/kafka-console-producer.sh --topic test --broker-list localhost:9092
+./bin/kafka-console-producer.sh --topic morse --broker-list 217.163.23.24:9092
