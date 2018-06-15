@@ -15,12 +15,11 @@ public class App {
     public static void main(String[] args) {
         App.log('i', "Yay! App started!");
 
-        /* Starting data generator */
-        //(new Thread(new DataGenerator(DATA_PATH))).start();
-
         /* Starting Flink consumer */
         (new Thread(new FlinkConsumer(args))).start();
 
+        /* Starting data generator */
+        (new Thread(new DataGenerator(DATA_PATH))).start();
     }
 
     public static void log(char type, String message) {

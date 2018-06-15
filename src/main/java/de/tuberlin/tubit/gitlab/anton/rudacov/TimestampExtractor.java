@@ -14,7 +14,8 @@ public class TimestampExtractor implements AssignerWithPeriodicWatermarks<String
     @Override
     public Watermark getCurrentWatermark() {
 
-        return null;
+        //Flink will expect a delay of maximum 2 seconds.
+        return new Watermark(System.currentTimeMillis() - 2000);
     }
 
     @Override
@@ -28,6 +29,7 @@ public class TimestampExtractor implements AssignerWithPeriodicWatermarks<String
         try {
             timestamp = format.parse(time).getTime();
         } catch (ParseException e) {
+            App.log('e',"Could not parse event time from data.");
             e.printStackTrace();
         }
 

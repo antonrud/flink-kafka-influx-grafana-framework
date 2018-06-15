@@ -25,11 +25,14 @@ public class FlinkConsumer implements Runnable {
 
         FlinkKafkaConsumer011<String> dataConsumer = new FlinkKafkaConsumer011<String>("morse", new SimpleStringSchema(), properties);
 
-        dataConsumer.setStartFromEarliest();
+        //dataConsumer.setStartFromEarliest();
 
         DataStream<String> stream = env.addSource(dataConsumer);
 
-        stream.rebalance().map(s -> "Received message: " + s).print();
+        stream/*.rebalance() this causes strange reorder of messages*/
+                .map(x -> Integer.parseInt(x.trim()) > 7500 ? 0 : 1)
+                .map(x -> "Received state: " + x)
+                .print();
 
         env.execute();
     }
