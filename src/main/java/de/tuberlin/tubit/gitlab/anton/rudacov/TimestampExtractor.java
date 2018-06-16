@@ -21,15 +21,13 @@ public class TimestampExtractor implements AssignerWithPeriodicWatermarks<String
     @Override
     public long extractTimestamp(String s, long l) {
 
-        SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss.SSS");
-
         String time = s.split(";")[0];
 
         Long timestamp = null;
         try {
-            timestamp = format.parse(time).getTime();
+            timestamp = App.TIMESTAMP_FORMAT.parse(time).getTime();
         } catch (ParseException e) {
-            App.log('e',"Could not parse event time from data.");
+            App.log('e', "Could not parse event time from data.");
             e.printStackTrace();
         }
 

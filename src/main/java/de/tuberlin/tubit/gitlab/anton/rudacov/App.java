@@ -1,14 +1,18 @@
 package de.tuberlin.tubit.gitlab.anton.rudacov;
 
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class App {
+
+    public static final SimpleDateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("hh:mm:ss.SSS");
+    public static final String KAFKA_BROKER = "217.163.23.24:9092";
+    public static final String KAFKA_TOPIC = "morse";
 
     private static final String DATA_PATH = "resources/sepiapro-morsedata-all.csv";
 

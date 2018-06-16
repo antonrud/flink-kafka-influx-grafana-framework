@@ -16,7 +16,7 @@ import java.util.Properties;
 public class FlinkConsumer implements Runnable {
 
     private String[] args;
-    private final SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss.SSS");
+
 
     public FlinkConsumer(String[] args) {
 
@@ -28,21 +28,25 @@ public class FlinkConsumer implements Runnable {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
         Properties properties = new Properties();
-        properties.setProperty("bootstrap.servers", "217.163.23.24:9092");
+        properties.setProperty("bootstrap.servers", App.KAFKA_BROKER);
 
-        FlinkKafkaConsumer011<String> dataConsumer = new FlinkKafkaConsumer011<String>("morse", new SimpleStringSchema(), properties);
+        FlinkKafkaConsumer011<String> dataConsumer = new FlinkKafkaConsumer011<String>(App.KAFKA_TOPIC, new SimpleStringSchema(), properties);
 
         //dataConsumer.setStartFromEarliest();
 
         DataStream<String> stream = env.addSource(dataConsumer);
 
+/*
+        TODO: InfluxDB sink
+
         DataStream<InfluxDBPoint> dataStream = stream.map(
                 new RichMapFunction<String, InfluxDBPoint>() {
+
 
                     @Override
                     public InfluxDBPoint map(String s) throws Exception {
 
-                        long timestamp = format.parse(s.split(";")[0]).getTime();
+                        long timestamp = App.TIMESTAMP_FORMAT.parse(s.split(";")[0]).getTime();
                         String measurement = s.split(";")[1];
 
                         HashMap<String, String> tags = new HashMap<>();
@@ -60,6 +64,8 @@ public class FlinkConsumer implements Runnable {
 
         InfluxDBConfig influxDBConfig = InfluxDBConfig.builder("217.163.23.24:8086", "admin", "DBPROgruppe3", "morse");
         dataStream.addSink(new InfluxDBSink(influxDBConfig));
+
+*/
 
         stream/*.rebalance() this causes strange reorder of messages*/
                 .map(x -> x.split(";")[1])

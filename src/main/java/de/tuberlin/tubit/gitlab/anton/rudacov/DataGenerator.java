@@ -31,9 +31,7 @@ public class DataGenerator implements Runnable {
 
         //Extract, assign and cut timestamps from data
         stream.assignTimestampsAndWatermarks(new TimestampExtractor())
-                .addSink(new FlinkKafkaProducer011<String>("217.163.23.24:9092", "morse", new SimpleStringSchema()));
-
-
+                .addSink(new FlinkKafkaProducer011<String>(App.KAFKA_BROKER, App.KAFKA_TOPIC, new SimpleStringSchema()));
 
         env.execute();
     }
