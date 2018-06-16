@@ -20,3 +20,18 @@
 
 # produce something into the topic (write something and hit enter)
 ./bin/kafka-console-producer.sh --topic morse --broker-list 217.163.23.24:9092
+
+
+
+# create a persistent volume for your data in /var/lib/grafana (database and plugins)
+docker volume create grafana-storage
+
+# start grafana
+docker run \
+  -d \
+  -p 3000:3000 \
+  --name=grafana \
+  -v grafana-storage:/var/lib/grafana \
+  grafana/grafana
+
+
