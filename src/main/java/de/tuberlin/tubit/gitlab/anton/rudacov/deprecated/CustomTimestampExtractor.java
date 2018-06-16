@@ -1,4 +1,4 @@
-package de.tuberlin.tubit.gitlab.anton.rudacov;
+package de.tuberlin.tubit.gitlab.anton.rudacov.deprecated;
 
 import org.apache.flink.streaming.api.functions.TimestampExtractor;
 import org.apache.kafka.clients.consumer.ConsumerRecord;

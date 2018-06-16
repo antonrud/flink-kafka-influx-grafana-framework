@@ -1,5 +1,6 @@
-package de.tuberlin.tubit.gitlab.anton.rudacov;
+package de.tuberlin.tubit.gitlab.anton.rudacov.deprecated;
 
+import de.tuberlin.tubit.gitlab.anton.rudacov.App;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
