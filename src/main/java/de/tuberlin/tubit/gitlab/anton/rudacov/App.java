@@ -1,30 +1,29 @@
 package de.tuberlin.tubit.gitlab.anton.rudacov;
 
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class App {
 
+    public static final SimpleDateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("hh:mm:ss.SSS");
+    public static final String KAFKA_BROKER = "217.163.23.24:9092";
+    public static final String KAFKA_TOPIC = "morse";
+
     private static final String DATA_PATH = "resources/sepiapro-morsedata-all.csv";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         App.log('i', "Yay! App started!");
-
-        for (String str : args) {
-            System.out.println(str);
-        }
-
-        /* Starting data generator */
-        (new Thread(new DataGenerator(DATA_PATH))).start();
 
         /* Starting Flink consumer */
         (new Thread(new FlinkConsumer(args))).start();
 
+        /* Starting data generator */
+        (new Thread(new DataGenerator(DATA_PATH))).start();
     }
 
     public static void log(char type, String message) {
