@@ -39,9 +39,8 @@ public class FlinkConsumer implements Runnable {
 
         DataStream<String> stream = env.addSource(dataConsumer);
 
-/*
-        TODO: InfluxDB sink
-
+        
+        //TODO: InfluxDB sink
         DataStream<InfluxDBPoint> dataStream = stream.map(
                 new RichMapFunction<String, InfluxDBPoint>() {
 
@@ -50,25 +49,23 @@ public class FlinkConsumer implements Runnable {
                     public InfluxDBPoint map(String s) throws Exception {
 
                         long timestamp = App.TIMESTAMP_FORMAT.parse(s.split(";")[0]).getTime();
-                        String measurement = s.split(";")[1];
+                        String measurement = "morse";
 
                         HashMap<String, String> tags = new HashMap<>();
-                        tags.put("host", input[1]);
-                        tags.put("region", "region#" + String.valueOf(input[1].hashCode() % 20));
+                        tags.put("id", "1");
 
                         HashMap<String, Object> fields = new HashMap<>();
-                        fields.put("value1", input[1].hashCode() % 100);
-                        fields.put("value2", input[1].hashCode() % 50);
+                        fields.put("resistance", s.split(";")[1]);
 
                         return new InfluxDBPoint(measurement, timestamp, tags, fields);
                     }
                 }
         );
 
+        //TODO why failure here?
         InfluxDBConfig influxDBConfig = InfluxDBConfig.builder("217.163.23.24:8086", "admin", "DBPROgruppe3", "morse");
         dataStream.addSink(new InfluxDBSink(influxDBConfig));
 
-*/
 
         stream/*.rebalance() this causes strange reorder of messages*/
                 .map(x -> x.split(";")[1])
