@@ -4,7 +4,6 @@ import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.influxdb.InfluxDBConfig;
-import org.apache.flink.streaming.connectors.influxdb.InfluxDBPoint;
 import org.apache.flink.streaming.connectors.influxdb.InfluxDBSink;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer011;
 
@@ -32,10 +31,12 @@ public class FlinkConsumer implements Runnable {
         DataStream<String> stream = env.addSource(dataConsumer);
 
         /* InfluxDB sink */
-        DataStream<InfluxDBPoint> dataStream = stream.map(new InfluxDBMapper());
         InfluxDBConfig influxDBConfig = new InfluxDBConfig(InfluxDBConfig.builder(App.INFLUX_URL, App.INFLUX_USER, App.INFLUX_PASS, App.INFLUX_DATABASE));
-        dataStream.addSink(new InfluxDBSink(influxDBConfig));
 
+        stream.map(new InfluxDBMapper())
+                .addSink(new InfluxDBSink(influxDBConfig));
+
+        /* Sink to console */
         stream/*.rebalance() this causes strange reorder of messages*/
                 .map(x -> x.split(";")[1])
                 .map(x -> Integer.parseInt(x.trim()) > 7500 ? 0 : 1)
