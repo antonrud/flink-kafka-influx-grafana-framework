@@ -29,6 +29,7 @@ public class DataGenerator implements Runnable {
 
         //Extract, assign and cut timestamps from data
         stream.assignTimestampsAndWatermarks(new TimestampExtractor())
+                /* .map(x -> x.split(";")[1]) TODO Add this after timestamp extraction is working on consumer side */
                 .addSink(new FlinkKafkaProducer011<String>(App.KAFKA_BROKER, App.KAFKA_TOPIC, new SimpleStringSchema()));
 
         env.execute();
