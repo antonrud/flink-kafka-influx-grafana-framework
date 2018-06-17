@@ -1,20 +1,13 @@
 package de.tuberlin.tubit.gitlab.anton.rudacov;
 
-import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
-import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.influxdb.InfluxDBConfig;
 import org.apache.flink.streaming.connectors.influxdb.InfluxDBPoint;
 import org.apache.flink.streaming.connectors.influxdb.InfluxDBSink;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer011;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
 
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.Properties;
 
 public class FlinkConsumer implements Runnable {
@@ -37,6 +30,11 @@ public class FlinkConsumer implements Runnable {
         //dataConsumer.setStartFromEarliest();
 
         DataStream<String> stream = env.addSource(dataConsumer);
+
+        /* InfluxDB sink */
+        DataStream<InfluxDBPoint> dataStream = stream.map(new InfluxDBMapper());
+        InfluxDBConfig influxDBConfig = new InfluxDBConfig(InfluxDBConfig.builder(App.INFLUX_URL, App.INFLUX_USER, App.INFLUX_PASS, App.INFLUX_DATABASE));
+        dataStream.addSink(new InfluxDBSink(influxDBConfig));
 
         stream/*.rebalance() this causes strange reorder of messages*/
                 .map(x -> x.split(";")[1])

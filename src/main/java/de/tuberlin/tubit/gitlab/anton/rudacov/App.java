@@ -1,5 +1,9 @@
 package de.tuberlin.tubit.gitlab.anton.rudacov;
 
+import org.influxdb.InfluxDB;
+import org.influxdb.InfluxDBFactory;
+import org.influxdb.dto.Query;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -21,6 +25,14 @@ public class App {
 
     public static void main(String[] args) throws IOException {
         App.log('i', "Yay! App started!");
+
+        /* Drop previous measurements in InfluxDB */
+        InfluxDB influxDB = InfluxDBFactory.connect(App.INFLUX_URL, App.INFLUX_USER, App.INFLUX_PASS);
+        influxDB.setDatabase(App.INFLUX_DATABASE);
+        Query query = new Query("DROP MEASUREMENT morseMeasurement", App.INFLUX_DATABASE);
+        influxDB.query(query);
+        influxDB.close();
+        App.log('i', "Database droped!");
 
         /* Starting Flink consumer */
         (new Thread(new FlinkConsumer())).start();

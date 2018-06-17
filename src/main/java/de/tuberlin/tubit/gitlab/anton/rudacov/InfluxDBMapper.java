@@ -4,7 +4,6 @@ import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.streaming.connectors.influxdb.InfluxDBPoint;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
