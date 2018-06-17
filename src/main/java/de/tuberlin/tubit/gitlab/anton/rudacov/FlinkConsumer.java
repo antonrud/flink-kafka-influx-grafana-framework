@@ -39,6 +39,7 @@ public class FlinkConsumer implements Runnable {
 
         DataStream<String> stream = env.addSource(dataConsumer);
 
+/*
 
         //TODO: InfluxDB sink
         DataStream<InfluxDBPoint> dataStream = stream.map(
@@ -61,9 +62,10 @@ public class FlinkConsumer implements Runnable {
                 }
         );
 
-        //TODO why failure here?
         InfluxDBConfig influxDBConfig = new InfluxDBConfig(InfluxDBConfig.builder("217.163.23.24:8086", "admin", "DBPROgruppe3", "morse"));
         dataStream.addSink(new InfluxDBSink(influxDBConfig));
+*/
+
 
         stream/*.rebalance() this causes strange reorder of messages*/
                 .map(x -> x.split(";")[1])
