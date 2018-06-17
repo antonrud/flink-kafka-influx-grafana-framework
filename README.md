@@ -1,7 +1,5 @@
 [![build status](https://gitlab.tubit.tu-berlin.de/anton.rudacov/DBPRO-IoT-Framework/badges/dev/build.svg)](https://gitlab.tubit.tu-berlin.de/anton.rudacov/DBPRO-IoT-Framework/commits/dev)  
 
-[![coverage report](https://gitlab.tubit.tu-berlin.de/anton.rudacov/DBPRO-IoT-Framework/badges/dev/coverage.svg)](https://gitlab.tubit.tu-berlin.de/anton.rudacov/DBPRO-IoT-Framework/commits/dev)
-
 
 # DBPRO IoT Framework
 
