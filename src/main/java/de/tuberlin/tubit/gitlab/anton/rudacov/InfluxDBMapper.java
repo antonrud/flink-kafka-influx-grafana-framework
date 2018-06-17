@@ -19,6 +19,7 @@ public class InfluxDBMapper extends RichMapFunction<String, InfluxDBPoint> imple
         /* TODO extract timestamps from stream itself */
         LocalDateTime dateTime = LocalDateTime.of(LocalDate.now(), LocalTime.parse(s.split(";")[0]));
         long timestamp = dateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant().toEpochMilli();
+
         String measurement = "morseMeasurement";
 
         HashMap<String, String> tags = new HashMap<>();
