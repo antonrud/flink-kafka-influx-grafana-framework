@@ -39,31 +39,11 @@ public class FlinkConsumer implements Runnable {
 
         DataStream<String> stream = env.addSource(dataConsumer);
 
-        
+
         //TODO: InfluxDB sink
-        DataStream<InfluxDBPoint> dataStream = stream.map(
-                new RichMapFunction<String, InfluxDBPoint>() {
+        DataStream<InfluxDBPoint> dataStream = stream.map(new InfluxDBMapper());
 
-
-                    @Override
-                    public InfluxDBPoint map(String s) throws Exception {
-
-                        long timestamp = App.TIMESTAMP_FORMAT.parse(s.split(";")[0]).getTime();
-                        String measurement = "morse";
-
-                        HashMap<String, String> tags = new HashMap<>();
-                        tags.put("id", "1");
-
-                        HashMap<String, Object> fields = new HashMap<>();
-                        fields.put("resistance", s.split(";")[1]);
-
-                        return new InfluxDBPoint(measurement, timestamp, tags, fields);
-                    }
-                }
-        );
-
-        //TODO why failure here?
-        InfluxDBConfig influxDBConfig = InfluxDBConfig.builder("217.163.23.24:8086", "admin", "DBPROgruppe3", "morse");
+        InfluxDBConfig influxDBConfig = new InfluxDBConfig(InfluxDBConfig.builder("http://217.163.23.24:8086", "admin", "DBPROgruppe3", "morse"));
         dataStream.addSink(new InfluxDBSink(influxDBConfig));
 
 
@@ -74,7 +54,6 @@ public class FlinkConsumer implements Runnable {
                 .print();
 
         env.execute();
-
     }
 
     @Override

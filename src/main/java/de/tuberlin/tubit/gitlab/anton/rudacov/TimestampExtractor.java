@@ -10,6 +10,8 @@ import java.text.SimpleDateFormat;
 
 public class TimestampExtractor implements AssignerWithPeriodicWatermarks<String> {
 
+    private SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss.SSS");
+
     @Nullable
     @Override
     public Watermark getCurrentWatermark() {
@@ -25,7 +27,7 @@ public class TimestampExtractor implements AssignerWithPeriodicWatermarks<String
 
         Long timestamp = null;
         try {
-            timestamp = App.TIMESTAMP_FORMAT.parse(time).getTime();
+            timestamp = format.parse(time).getTime();
         } catch (ParseException e) {
             App.log('e', "Could not parse event time from data.");
             e.printStackTrace();
