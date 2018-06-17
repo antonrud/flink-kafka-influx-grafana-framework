@@ -10,6 +10,8 @@ import java.text.SimpleDateFormat;
 
 public class TimestampExtractor implements AssignerWithPeriodicWatermarks<String> {
 
+    private SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss.SSS");
+
     @Nullable
     @Override
     public Watermark getCurrentWatermark() {
@@ -20,7 +22,6 @@ public class TimestampExtractor implements AssignerWithPeriodicWatermarks<String
 
     @Override
     public long extractTimestamp(String s, long l) {
-        SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss.SSS");
 
         String time = s.split(";")[0];
 
