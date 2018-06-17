@@ -26,6 +26,7 @@ public class InfluxDBMapper extends RichMapFunction<String, InfluxDBPoint> imple
 
         HashMap<String, Object> fields = new HashMap<>();
         fields.put("resistance", s.split(";")[1]);
+        fields.put("code", Integer.parseInt(s.split(";")[1].trim()) > 7500 ? 0 : 1);
 
         return new InfluxDBPoint(measurement, timestamp, tags, fields);
     }
