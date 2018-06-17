@@ -8,7 +8,11 @@ import org.apache.flink.streaming.connectors.influxdb.InfluxDBConfig;
 import org.apache.flink.streaming.connectors.influxdb.InfluxDBPoint;
 import org.apache.flink.streaming.connectors.influxdb.InfluxDBSink;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer011;
+import org.influxdb.InfluxDB;
+import org.influxdb.InfluxDBFactory;
+import org.influxdb.dto.Query;
 
+import java.util.Arrays;
 import java.util.Properties;
 
 public class DataGenerator implements Runnable {
@@ -30,6 +34,13 @@ public class DataGenerator implements Runnable {
         //properties.setProperty("bootstrap.serveStartFromEarliesrs", "localhost:9092");
 
         DataStream<String> stream = env.readTextFile(dataPath);
+
+        /* Drop previous measurements in InfluxDB */
+        InfluxDB influxDB = InfluxDBFactory.connect(App.INFLUX_URL, App.INFLUX_USER, App.INFLUX_PASS);
+        influxDB.setDatabase(App.INFLUX_DATABASE);
+        Query query = new Query("DROP MEASUREMENT morseMeasurement", App.INFLUX_DATABASE);
+        influxDB.query(query);
+        influxDB.close();
 
         /* InfluxDB sink */
         DataStream<InfluxDBPoint> dataStream = stream.map(new InfluxDBMapper());
