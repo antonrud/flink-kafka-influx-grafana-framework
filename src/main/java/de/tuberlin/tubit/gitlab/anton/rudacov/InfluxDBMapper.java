@@ -5,18 +5,20 @@ import org.apache.flink.streaming.connectors.influxdb.InfluxDBPoint;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 
 public class InfluxDBMapper extends RichMapFunction<String, InfluxDBPoint> implements Serializable {
-
-    /*TODO Remove this after timestamp extraction is working*/
-    private SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss.SSS");
 
     @Override
     public InfluxDBPoint map(String s) throws Exception {
 
         /* TODO extract timestamps from stream itself */
-        long timestamp = format.parse(s.split(";")[0]).getTime();
+        LocalDateTime dateTime = LocalDateTime.of(LocalDate.now(), LocalTime.parse(s.split(";")[0]));
+        long timestamp = dateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant().toEpochMilli();
         String measurement = "morseMeasurement";
 
         HashMap<String, String> tags = new HashMap<>();

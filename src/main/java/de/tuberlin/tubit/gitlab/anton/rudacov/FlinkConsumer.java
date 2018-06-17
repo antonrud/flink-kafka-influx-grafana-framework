@@ -19,11 +19,9 @@ import java.util.Properties;
 
 public class FlinkConsumer implements Runnable {
 
-    private String[] args;
 
-    public FlinkConsumer(String[] args) {
+    public FlinkConsumer() {
 
-        this.args = args;
     }
 
     public void consume() throws Exception {
@@ -35,6 +33,7 @@ public class FlinkConsumer implements Runnable {
 
         FlinkKafkaConsumer011<String> dataConsumer = new FlinkKafkaConsumer011<String>(App.KAFKA_TOPIC, new SimpleStringSchema(), properties);
 
+        /* Uncomment this if necessary */
         //dataConsumer.setStartFromEarliest();
 
         DataStream<String> stream = env.addSource(dataConsumer);

@@ -4,7 +4,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -24,7 +23,7 @@ public class App {
         App.log('i', "Yay! App started!");
 
         /* Starting Flink consumer */
-        (new Thread(new FlinkConsumer(args))).start();
+        (new Thread(new FlinkConsumer())).start();
 
         /* Starting data generator */
         (new Thread(new DataGenerator(DATA_PATH))).start();
