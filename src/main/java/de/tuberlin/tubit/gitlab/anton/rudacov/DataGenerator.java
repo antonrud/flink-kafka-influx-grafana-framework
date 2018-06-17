@@ -4,7 +4,11 @@ import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.connectors.influxdb.InfluxDBConfig;
+import org.apache.flink.streaming.connectors.influxdb.InfluxDBPoint;
+import org.apache.flink.streaming.connectors.influxdb.InfluxDBSink;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer011;
+
 import java.util.Properties;
 
 public class DataGenerator implements Runnable {
@@ -26,6 +30,11 @@ public class DataGenerator implements Runnable {
         //properties.setProperty("bootstrap.serveStartFromEarliesrs", "localhost:9092");
 
         DataStream<String> stream = env.readTextFile(dataPath);
+
+        /* InfluxDB sink */
+        DataStream<InfluxDBPoint> dataStream = stream.map(new InfluxDBMapper());
+        InfluxDBConfig influxDBConfig = new InfluxDBConfig(InfluxDBConfig.builder(App.INFLUX_URL, App.INFLUX_USER, App.INFLUX_PASS, App.INFLUX_DATABASE));
+        dataStream.addSink(new InfluxDBSink(influxDBConfig));
 
         //Extract, assign and cut timestamps from data
         stream.assignTimestampsAndWatermarks(new TimestampExtractor())

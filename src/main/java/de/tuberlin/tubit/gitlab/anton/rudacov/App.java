@@ -13,6 +13,11 @@ public class App {
     public static final String KAFKA_BROKER = "217.163.23.24:9092";
     public static final String KAFKA_TOPIC = "morse";
 
+    public static final String INFLUX_URL = "http://217.163.23.24:8086";
+    public static final String INFLUX_USER = "admin";
+    public static final String INFLUX_PASS = "DBPROgruppe3";
+    public static final String INFLUX_DATABASE = "morse";
+
     private static final String DATA_PATH = "resources/sepiapro-morsedata-all.csv";
 
     public static void main(String[] args) throws IOException {
