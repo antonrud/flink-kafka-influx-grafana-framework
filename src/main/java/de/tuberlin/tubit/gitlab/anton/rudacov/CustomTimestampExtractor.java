@@ -1,31 +1,18 @@
 package de.tuberlin.tubit.gitlab.anton.rudacov;
 
-import org.apache.flink.streaming.api.functions.TimestampExtractor;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.flink.streaming.api.functions.AssignerWithPunctuatedWatermarks;
+import org.apache.flink.streaming.api.watermark.Watermark;
 
-public class CustomTimestampExtractor implements TimestampExtractor {
-    public long extract(ConsumerRecord<Object, Object> record, long previousTimestamp) {
-        final long timestamp = record.timestamp();
-
-        if ( timestamp < 0 ) {
-            return System.currentTimeMillis();
-        }
-
-        return timestamp;
+public class CustomTimestampExtractor implements AssignerWithPunctuatedWatermarks<String>  {
+    @Override
+    public Watermark checkAndGetNextWatermark(String lastElement, long extractedTimestamp) {
+        System.out.println(extractedTimestamp + " / " + lastElement);
+        return new Watermark(extractedTimestamp);
     }
 
     @Override
-    public long extractTimestamp(Object element, long currentTimestamp) {
-        return extract((ConsumerRecord<Object, Object>) element, currentTimestamp);
-    }
-
-    @Override
-    public long extractWatermark(Object element, long currentTimestamp) {
-        return getCurrentWatermark();
-    }
-
-    @Override
-    public long getCurrentWatermark() {
-        return System.currentTimeMillis();
+    public long extractTimestamp(String element, long previousElementTimestamp) {
+        System.out.println(previousElementTimestamp);
+        return previousElementTimestamp;
     }
 }

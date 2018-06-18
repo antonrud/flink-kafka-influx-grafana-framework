@@ -33,7 +33,7 @@ public class DataGeneratorTime implements Runnable {
         try{
 
             dataStream = Files.lines(Paths.get(dataPath));
-            this.producer = new KafkaProducer<>(this.properties);
+            this.producer = new KafkaProducer<String, String>(this.properties);
 
             dataStream.forEach(element -> sendLine(element));
             this.producer.close();
@@ -92,21 +92,3 @@ public class DataGeneratorTime implements Runnable {
         }
     }
 }
-
-/*
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.streams.processor.TimestampExtractor;
-
-public class CustomTimestampExtractor implements TimestampExtractor{
-    @Override
-    public long extract(ConsumerRecord<Object, Object> record, long previousTimestamp) {
-        final long timestamp = consumerRecord.timestamp();
-
-        if ( timestamp < 0 ) {
-            return System.currentTimeMillis();
-        }
-
-        return timestamp;
-    }
-}
- */

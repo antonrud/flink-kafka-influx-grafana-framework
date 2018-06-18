@@ -10,9 +10,14 @@ import java.time.format.DateTimeFormatter;
 public class App {
 
     private static final String DATA_PATH = "resources/sepiapro-morsedata-all.csv";
-    public static final String KAFKA_TOPIC = "test5";
+    public static final String KAFKA_TOPIC = "test3";
     //public static final String KAFKA_BROKER = "127.0.0.1:9092";
     public static final String KAFKA_BROKER = "192.168.0.104:9092";
+    //
+    public static final String dbUser = "root";
+    public static final String dbPass = "root";
+    public static final String dbHost = "http://192.168.0.104:8086";
+    public static final String dbName = "db_flink_test";
 
     public static void main(String[] args) throws IOException {
         App.log('i', "Yay! App started!");
