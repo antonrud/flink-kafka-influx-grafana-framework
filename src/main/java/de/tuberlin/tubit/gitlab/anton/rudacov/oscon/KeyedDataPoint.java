@@ -9,6 +9,7 @@ public class KeyedDataPoint<T> extends DataPoint<T> implements ResultTypeQueryab
     private String key;
 
     public KeyedDataPoint(){
+
         super();
         this.key = null;
     }

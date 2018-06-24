@@ -14,12 +14,12 @@ public class ProducerRecordMapper {
 
     public static ProducerRecord apply(String line) {
 
-        String serializedKey = line.split(";")[0];
-        String serializedValue = line.split(";")[1];
-        LocalDateTime dateTime = LocalDateTime.of(LocalDate.now(), LocalTime.parse(line.split(";")[0]));
+        String key = line.split(";")[0];
+        String value = line.split(";")[1];
+        LocalDateTime dateTime = LocalDateTime.of(LocalDate.now(), LocalTime.parse(key));
         long timestamp = dateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant().toEpochMilli();
-        KeyedDataPoint<String> dp = new KeyedDataPoint<>(serializedKey, timestamp, serializedValue);
+        KeyedDataPoint<String> keyedDataPoint = new KeyedDataPoint<>(key, timestamp, value);
 
-        return new ProducerRecord(App.KAFKA_TOPIC, 0 /*Migth be wrong*/, timestamp, serializedKey, dp);
+        return new ProducerRecord(App.KAFKA_TOPIC, 0 /*Migth be wrong*/, timestamp, key, keyedDataPoint);
     }
 }

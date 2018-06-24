@@ -1,5 +1,6 @@
-package de.tuberlin.tubit.gitlab.anton.rudacov;
+package de.tuberlin.tubit.gitlab.anton.rudacov.depricated;
 
+import de.tuberlin.tubit.gitlab.anton.rudacov.App;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
