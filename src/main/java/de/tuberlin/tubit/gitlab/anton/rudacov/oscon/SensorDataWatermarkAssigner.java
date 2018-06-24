@@ -6,7 +6,7 @@ import org.apache.flink.streaming.api.watermark.Watermark;
 public class SensorDataWatermarkAssigner<T> implements AssignerWithPunctuatedWatermarks<KeyedDataPoint<T>> {
     @Override
     public Watermark checkAndGetNextWatermark(KeyedDataPoint<T> dataPoint, long l) {
-        return new Watermark(dataPoint.getTimeStampMs() - 1000);
+        return new Watermark(dataPoint.getTimeStampMs() - 2000);
     }
 
     @Override

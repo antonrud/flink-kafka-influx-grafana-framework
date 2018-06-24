@@ -36,18 +36,18 @@ public class FlinkConsumer implements Runnable {
 
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
-        FlinkKafkaConsumer011<KeyedDataPoint<String>> kafkaConsumer =
-                new FlinkKafkaConsumer011<>(App.KAFKA_TOPIC, new DataPointSerializationSchema<>(), this.properties);
+        SingleOutputStreamOperator<KeyedDataPoint<String>> sensorStream =
+                env.addSource(new FlinkKafkaConsumer011<>(App.KAFKA_TOPIC, new DataPointSerializationSchema<>(), properties));
 
-        SingleOutputStreamOperator<KeyedDataPoint<String>> sensorStream = env.addSource(kafkaConsumer);
-        sensorStream = sensorStream.assignTimestampsAndWatermarks(new SensorDataWatermarkAssigner<>());
         sensorStream
+                .assignTimestampsAndWatermarks(new SensorDataWatermarkAssigner<>())
                 .addSink(new InfluxDBSink("morseMeasurement", 7500));
-        //
+
         sensorStream
-                .map(x -> x.getValue() + " - " + String.valueOf(x.getTimeStampMs())).returns(String.class)
+                .map(x -> x.getValue() + " - " + String.valueOf(x.getTimeStampMs()))
+                .returns(String.class)
                 .print();
-        //
+
         env.execute();
     }
 
