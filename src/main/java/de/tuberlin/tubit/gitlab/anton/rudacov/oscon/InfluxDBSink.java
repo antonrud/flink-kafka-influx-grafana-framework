@@ -18,8 +18,10 @@ public class InfluxDBSink<T extends DataPoint<? extends Number>> extends RichSin
     private Integer threshold;
 
     public InfluxDBSink(String measurement){
+
         this.measurement = measurement;
     }
+
     public InfluxDBSink(String measurement, Integer threshold){
         this.measurement = measurement;
         this.threshold = threshold;

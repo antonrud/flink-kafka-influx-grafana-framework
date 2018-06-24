@@ -1,5 +1,6 @@
 package de.tuberlin.tubit.gitlab.anton.rudacov.mappers;
 
+import de.tuberlin.tubit.gitlab.anton.rudacov.oscon.KeyedDataPoint;
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.streaming.connectors.influxdb.InfluxDBPoint;
 
@@ -10,23 +11,21 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.HashMap;
 
-public class InfluxDBMapper extends RichMapFunction<String, InfluxDBPoint> implements Serializable {
+public class InfluxDBMapper extends RichMapFunction<KeyedDataPoint<String>, InfluxDBPoint> implements Serializable {
 
     @Override
-    public InfluxDBPoint map(String s) throws Exception {
-
-        /* TODO extract timestamps from stream itself */
-        LocalDateTime dateTime = LocalDateTime.of(LocalDate.now(), LocalTime.parse(s.split(";")[0]));
-        long timestamp = dateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant().toEpochMilli();
+    public InfluxDBPoint map(KeyedDataPoint<String> dataPoint) {
 
         String measurement = "morseMeasurement";
+
+        long timestamp = dataPoint.getTimeStampMs();
 
         HashMap<String, String> tags = new HashMap<>();
         tags.put("id", "generated");
 
         HashMap<String, Object> fields = new HashMap<>();
-        fields.put("resistance", s.split(";")[1]);
-        fields.put("code", Integer.parseInt(s.split(";")[1].trim()) > 7500 ? 0 : 1);
+        fields.put("resistance", dataPoint.getValue());
+        fields.put("code", Integer.parseInt(dataPoint.getValue().trim()) > 7500 ? 0 : 1);
 
         return new InfluxDBPoint(measurement, timestamp, tags, fields);
     }

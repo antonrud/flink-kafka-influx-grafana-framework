@@ -1,12 +1,14 @@
 package de.tuberlin.tubit.gitlab.anton.rudacov;
 
+import de.tuberlin.tubit.gitlab.anton.rudacov.mappers.InfluxDBMapper;
 import de.tuberlin.tubit.gitlab.anton.rudacov.oscon.DataPointSerializationSchema;
-import de.tuberlin.tubit.gitlab.anton.rudacov.oscon.InfluxDBSink;
 import de.tuberlin.tubit.gitlab.anton.rudacov.oscon.KeyedDataPoint;
 import de.tuberlin.tubit.gitlab.anton.rudacov.oscon.SensorDataWatermarkAssigner;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.connectors.influxdb.InfluxDBConfig;
+import org.apache.flink.streaming.connectors.influxdb.InfluxDBSink;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer011;
 
 import java.util.Properties;
@@ -39,9 +41,11 @@ public class FlinkConsumer implements Runnable {
         SingleOutputStreamOperator<KeyedDataPoint<String>> sensorStream =
                 env.addSource(new FlinkKafkaConsumer011<>(App.KAFKA_TOPIC, new DataPointSerializationSchema<>(), properties));
 
+        InfluxDBConfig influxDBConfig = new InfluxDBConfig(InfluxDBConfig.builder(App.INFLUX_URL, App.INFLUX_USER, App.INFLUX_PASS, App.INFLUX_DATABASE));
+
         sensorStream
                 .assignTimestampsAndWatermarks(new SensorDataWatermarkAssigner<>())
-                .addSink(new InfluxDBSink("morseMeasurement", 7500));
+              .map(new InfluxDBMapper()).addSink(new InfluxDBSink(influxDBConfig));
 
         sensorStream
                 .map(x -> x.getTimeStampMs() + ": " + x.getValue())
