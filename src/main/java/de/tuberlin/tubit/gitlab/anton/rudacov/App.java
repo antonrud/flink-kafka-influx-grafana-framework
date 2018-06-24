@@ -1,5 +1,9 @@
 package de.tuberlin.tubit.gitlab.anton.rudacov;
 
+import org.influxdb.InfluxDB;
+import org.influxdb.InfluxDBFactory;
+import org.influxdb.dto.Query;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -9,32 +13,33 @@ import java.time.format.DateTimeFormatter;
 
 public class App {
 
+    public static final String KAFKA_BROKER = "217.163.23.24:9092";
+    public static final String KAFKA_TOPIC = "morse";
+
+    public static final String INFLUX_URL = "http://217.163.23.24:8086";
+    public static final String INFLUX_USER = "admin";
+    public static final String INFLUX_PASS = "DBPROgruppe3";
+    public static final String INFLUX_DATABASE = "morse";
+
     private static final String DATA_PATH = "resources/sepiapro-morsedata-all.csv";
-    public static final String KAFKA_TOPIC = "test3";
-    //public static final String KAFKA_BROKER = "127.0.0.1:9092";
-    public static final String KAFKA_BROKER = "192.168.0.104:9092";
-    //
-    public static final String dbUser = "root";
-    public static final String dbPass = "root";
-    public static final String dbHost = "http://192.168.0.104:8086";
-    public static final String dbName = "db_flink_test";
 
     public static void main(String[] args) throws IOException {
         App.log('i', "Yay! App started!");
 
-        for (String str : args) {
-            System.out.println(str);
-        }
+        /* Drop previous measurements in InfluxDB */
+        InfluxDB influxDB = InfluxDBFactory.connect(App.INFLUX_URL, App.INFLUX_USER, App.INFLUX_PASS);
+        influxDB.setDatabase(App.INFLUX_DATABASE);
+        Query query = new Query("DROP MEASUREMENT morseMeasurement", App.INFLUX_DATABASE);
+        influxDB.query(query);
+        influxDB.close();
+        App.log('i', "Database droped!");
 
-        //testKafka();
+        /* Starting Flink consumer */
+        (new Thread(new FlinkConsumer())).start();
 
         /* Starting data generator */
         //(new Thread(new DataGenerator(DATA_PATH))).start();
         (new Thread(new DataGeneratorTime(DATA_PATH))).start();
-
-        /* Starting Flink consumer */
-        (new Thread(new FlinkConsumer(args))).start();
-
     }
 
     public static void log(char type, String message) {

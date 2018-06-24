@@ -1,5 +1,7 @@
 package de.tuberlin.tubit.gitlab.anton.rudacov;
 
+import de.tuberlin.tubit.gitlab.anton.rudacov.oscon.DataPointSerializationSchema;
+import de.tuberlin.tubit.gitlab.anton.rudacov.oscon.KeyedDataPoint;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -9,6 +11,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Properties;
 import java.util.stream.Stream;
@@ -17,7 +23,7 @@ public class DataGeneratorTime implements Runnable {
 
     Properties properties;
     private String dataPath;
-    private Producer<String, String> producer;
+    private Producer<String, KeyedDataPoint<String>> producer;
 
     public DataGeneratorTime(String dataPath) {
         this.dataPath = dataPath;
@@ -27,13 +33,15 @@ public class DataGeneratorTime implements Runnable {
         this.properties = new Properties();
         this.properties.setProperty("bootstrap.servers", App.KAFKA_BROKER);
         this.properties.setProperty("key.serializer","org.apache.kafka.common.serialization.StringSerializer");
-        this.properties.setProperty("value.serializer","org.apache.kafka.common.serialization.StringSerializer");
+        //this.properties.setProperty("value.serializer","org.apache.kafka.common.serialization.ByteArraySerializer");
+        //this.properties.setProperty("key.serializer",DataPointSerializationSchema.class.getCanonicalName());
+        this.properties.setProperty("value.serializer",DataPointSerializationSchema.class.getCanonicalName());
         //
         Stream<String> dataStream = null;
         try{
 
             dataStream = Files.lines(Paths.get(dataPath));
-            this.producer = new KafkaProducer<String, String>(this.properties);
+            this.producer = new KafkaProducer<>(this.properties);
 
             dataStream.forEach(element -> sendLine(element));
             this.producer.close();
@@ -58,15 +66,13 @@ public class DataGeneratorTime implements Runnable {
     }
 
     private void sendLine(String line) {
-        String[] parts = line.split(";");
-        Long timestamp = getTimestamp(parts[0]);
-        String serializedKey = App.KAFKA_TOPIC + parts[0];
-        String serializedValue = parts[1];
+        String serializedKey = line.split(";")[0];
+        String serializedValue = line.split(";")[1];
+        LocalDateTime dateTime = LocalDateTime.of(LocalDate.now(), LocalTime.parse(line.split(";")[0]));
+        long timestamp = dateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant().toEpochMilli();
+        KeyedDataPoint<String> dp = new KeyedDataPoint<>(serializedKey, timestamp, serializedValue);
         //
-        this.producer.send(new ProducerRecord<String, String>(App.KAFKA_TOPIC, (Integer) null, timestamp, serializedKey, serializedValue));
-        //this.producer.send(new ProducerRecord<>(App.KAFKA_TOPIC,serializedValue));
-        //App.log('i', "line produced ...");
-        //System.out.println("produced");
+        this.producer.send(new ProducerRecord(App.KAFKA_TOPIC, (Integer) null, timestamp, serializedKey, dp));
     }
 
     private Long getTimestamp(String part){
