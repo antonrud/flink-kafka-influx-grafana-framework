@@ -15,9 +15,14 @@ public class InfluxDBSink<T extends DataPoint<? extends Number>> extends RichSin
     private static String dataBaseName = App.INFLUX_DATABASE;
     private static String fieldName = "value";     /** anpassen */
     private String measurement;
+    private Integer threshold;
 
     public InfluxDBSink(String measurement){
         this.measurement = measurement;
+    }
+    public InfluxDBSink(String measurement, Integer threshold){
+        this.measurement = measurement;
+        this.threshold = threshold;
     }
 
     @Override
@@ -35,7 +40,7 @@ public class InfluxDBSink<T extends DataPoint<? extends Number>> extends RichSin
 
     @Override
     public void invoke(T dataPoint) throws Exception {
-        Integer val = Integer.parseInt(String.valueOf(dataPoint.getValue()));
+        Integer val = Integer.parseInt(String.valueOf(dataPoint.getValue()).trim()) > this.threshold ? 0 : 1;
         Point.Builder builder = Point.measurement(measurement)
                 .time(dataPoint.getTimeStampMs(), TimeUnit.MILLISECONDS)
                 .addField(fieldName, val);

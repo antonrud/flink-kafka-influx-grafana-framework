@@ -29,7 +29,7 @@ public class FlinkConsumer implements Runnable {
         SingleOutputStreamOperator<KeyedDataPoint<String>> sensorStream = env.addSource(kafkaConsumer);
         sensorStream = sensorStream.assignTimestampsAndWatermarks(new SensorDataWatermarkAssigner<>());
         sensorStream
-                .addSink(new InfluxDBSink("morseMeasurement"));
+                .addSink(new InfluxDBSink("morseMeasurement", 7500));
         //
         sensorStream
             .map(x -> x.getValue() + " - " + String.valueOf(x.getTimeStampMs())).returns(String.class)
