@@ -23,31 +23,25 @@ public class DataGeneratorTime implements Runnable {
     public DataGeneratorTime(String dataPath) {
 
         this.dataPath = dataPath;
+
         this.properties = new Properties();
         this.properties.setProperty("bootstrap.servers", App.KAFKA_BROKER);
         this.properties.setProperty("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         this.properties.setProperty("value.serializer", DataPointSerializationSchema.class.getCanonicalName());
+
+        this.producer = new KafkaProducer<>(properties);
     }
 
-    private void produce() throws Exception {
+    private void produce() throws IOException {
 
         Function<String, ProducerRecord> producerRecordMapper = ProducerRecordMapper::apply;
-        Stream<String> dataStream = null;
 
-        try {
-            producer = new KafkaProducer<>(properties);
+        Stream<String> dataStream = Files.lines(Paths.get(dataPath));
+        dataStream
+                .map(producerRecordMapper)
+                .forEach(record -> producer.send(record));
 
-            dataStream = Files.lines(Paths.get(dataPath));
-            dataStream
-                    .map(producerRecordMapper)
-                    .forEach(record -> producer.send(record));
-
-            this.producer.close();
-
-        } catch (IOException e) {
-            App.log('f', "Not able to access data file");
-        }
-
+        producer.close();
         dataStream.close();
     }
 
@@ -57,7 +51,8 @@ public class DataGeneratorTime implements Runnable {
             App.log('i', "Generator starting...");
             produce();
             App.log('i', "Generator ending...");
-        } catch (Exception e) {
+        } catch (IOException e) {
+            App.log('f', "Not able to access data file");
             e.printStackTrace();
         }
     }
