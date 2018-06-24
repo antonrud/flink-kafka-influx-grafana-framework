@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class App {
-    
+
     public static final String KAFKA_BROKER = "217.163.23.24:9092";
     public static final String KAFKA_TOPIC = "morse";
 
@@ -27,12 +27,7 @@ public class App {
         App.log('i', "Yay! App started!");
 
         /* Drop previous measurements in InfluxDB */
-        InfluxDB influxDB = InfluxDBFactory.connect(App.INFLUX_URL, App.INFLUX_USER, App.INFLUX_PASS);
-        influxDB.setDatabase(App.INFLUX_DATABASE);
-        Query query = new Query("DROP MEASUREMENT morseMeasurement", App.INFLUX_DATABASE);
-        influxDB.query(query);
-        influxDB.close();
-        App.log('i', "Database droped!");
+        dropMeasurement();
 
         /* Starting Flink consumer */
         (new Thread(new FlinkConsumer())).start();
@@ -40,6 +35,16 @@ public class App {
         /* Starting data generator */
         //(new Thread(new DataGenerator(DATA_PATH))).start();
         (new Thread(new DataGeneratorTime(DATA_PATH))).start();
+    }
+
+    private static void dropMeasurement() {
+
+        InfluxDB influxDB = InfluxDBFactory.connect(App.INFLUX_URL, App.INFLUX_USER, App.INFLUX_PASS);
+        influxDB.setDatabase(App.INFLUX_DATABASE);
+        Query query = new Query("DROP MEASUREMENT morseMeasurement", App.INFLUX_DATABASE);
+        influxDB.query(query);
+        influxDB.close();
+        App.log('i', "Database droped!");
     }
 
     public static void log(char type, String message) {

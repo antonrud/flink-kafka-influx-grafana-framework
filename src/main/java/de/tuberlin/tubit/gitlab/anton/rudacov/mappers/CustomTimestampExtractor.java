@@ -1,4 +1,4 @@
-package de.tuberlin.tubit.gitlab.anton.rudacov;
+package de.tuberlin.tubit.gitlab.anton.rudacov.mappers;
 
 import org.apache.flink.streaming.api.functions.AssignerWithPunctuatedWatermarks;
 import org.apache.flink.streaming.api.watermark.Watermark;

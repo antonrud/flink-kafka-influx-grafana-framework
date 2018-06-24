@@ -1,4 +1,4 @@
-package de.tuberlin.tubit.gitlab.anton.rudacov;
+package de.tuberlin.tubit.gitlab.anton.rudacov.mappers;
 
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.streaming.connectors.influxdb.InfluxDBPoint;

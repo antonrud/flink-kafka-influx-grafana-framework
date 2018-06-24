@@ -12,16 +12,28 @@ import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer011;
 import java.util.Properties;
 
 public class FlinkConsumer implements Runnable {
-    Properties properties;
+
+    private Properties properties;
 
     public FlinkConsumer() {
 
+        this.properties = new Properties();
+
+        this.properties.put("bootstrap.servers", App.KAFKA_BROKER);
+        this.properties.put("auto.offset.reset", "earliest");
+        this.properties.put("group.id", App.KAFKA_TOPIC);
+        this.properties.put("enable_auto_commit", "true");
+        this.properties.setProperty("key.serializer", DataPointSerializationSchema.class.getCanonicalName());
+        this.properties.setProperty("value.serializer", DataPointSerializationSchema.class.getCanonicalName());
     }
 
     public void consume() throws Exception {
+
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+
         //env.enableCheckpointing(1000);
         //env.setParallelism(1);
+
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
         FlinkKafkaConsumer011<KeyedDataPoint<String>> kafkaConsumer = new FlinkKafkaConsumer011<>(App.KAFKA_TOPIC, new DataPointSerializationSchema<>(), this.properties);
@@ -32,8 +44,8 @@ public class FlinkConsumer implements Runnable {
                 .addSink(new InfluxDBSink("morseMeasurement", 7500));
         //
         sensorStream
-            .map(x -> x.getValue() + " - " + String.valueOf(x.getTimeStampMs())).returns(String.class)
-            .print();
+                .map(x -> x.getValue() + " - " + String.valueOf(x.getTimeStampMs())).returns(String.class)
+                .print();
         //
         env.execute();
     }
@@ -41,13 +53,6 @@ public class FlinkConsumer implements Runnable {
     @Override
     public void run() {
         try {
-            this.properties = new Properties();
-            this.properties.put("bootstrap.servers", App.KAFKA_BROKER);
-            this.properties.put("auto.offset.reset", "earliest");
-            this.properties.put("group.id", App.KAFKA_TOPIC);
-            this.properties.put("enable_auto_commit", "true");
-            this.properties.setProperty("key.serializer",DataPointSerializationSchema.class.getCanonicalName());
-            this.properties.setProperty("value.serializer",DataPointSerializationSchema.class.getCanonicalName());
             consume();
         } catch (Exception e) {
             e.printStackTrace();
