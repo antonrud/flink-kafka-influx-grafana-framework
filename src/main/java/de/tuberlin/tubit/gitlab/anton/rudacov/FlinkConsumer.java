@@ -44,7 +44,7 @@ public class FlinkConsumer implements Runnable {
                 .addSink(new InfluxDBSink("morseMeasurement", 7500));
 
         sensorStream
-                .map(x -> x.getValue() + " - " + String.valueOf(x.getTimeStampMs()))
+                .map(x -> x.getTimeStampMs() + ": " + x.getValue())
                 .returns(String.class)
                 .print();
 
