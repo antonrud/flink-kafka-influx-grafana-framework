@@ -20,8 +20,8 @@ public class FlinkConsumer implements Runnable {
 
     public void consume() throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        env.enableCheckpointing(1000);
-        env.setParallelism(1);
+        //env.enableCheckpointing(1000);
+        //env.setParallelism(1);
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
         FlinkKafkaConsumer011<KeyedDataPoint<String>> kafkaConsumer = new FlinkKafkaConsumer011<>(App.KAFKA_TOPIC, new DataPointSerializationSchema<>(), this.properties);
@@ -36,7 +36,6 @@ public class FlinkConsumer implements Runnable {
             .print();
         //
         env.execute();
-
     }
 
     @Override
@@ -47,8 +46,6 @@ public class FlinkConsumer implements Runnable {
             this.properties.put("auto.offset.reset", "earliest");
             this.properties.put("group.id", App.KAFKA_TOPIC);
             this.properties.put("enable_auto_commit", "true");
-            //this.properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-            //this.properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
             this.properties.setProperty("key.serializer",DataPointSerializationSchema.class.getCanonicalName());
             this.properties.setProperty("value.serializer",DataPointSerializationSchema.class.getCanonicalName());
             consume();

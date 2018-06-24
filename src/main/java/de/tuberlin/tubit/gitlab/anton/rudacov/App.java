@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class App {
-
+    
     public static final String KAFKA_BROKER = "217.163.23.24:9092";
     public static final String KAFKA_TOPIC = "morse";
 

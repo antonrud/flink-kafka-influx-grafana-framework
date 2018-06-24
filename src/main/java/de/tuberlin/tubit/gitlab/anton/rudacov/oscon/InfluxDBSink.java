@@ -13,7 +13,7 @@ public class InfluxDBSink<T extends DataPoint<? extends Number>> extends RichSin
 
     private transient InfluxDB influxDB = null;
     private static String dataBaseName = App.INFLUX_DATABASE;
-    private static String fieldName = "value";     /** anpassen */
+    private static String fieldName = "resistance";     /** anpassen */
     private String measurement;
     private Integer threshold;
 
