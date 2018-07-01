@@ -1,12 +1,9 @@
 package de.tuberlin.tubit.gitlab.anton.rudacov.deprecated;
 
-<<<<<<< HEAD:src/main/java/de/tuberlin/tubit/gitlab/anton/rudacov/deprecated/DataGeneratorTime.java
 import de.tuberlin.tubit.gitlab.anton.rudacov.App;
-=======
 import de.tuberlin.tubit.gitlab.anton.rudacov.mappers.ProducerRecordMapper;
 import de.tuberlin.tubit.gitlab.anton.rudacov.oscon.DataPointSerializationSchema;
 import de.tuberlin.tubit.gitlab.anton.rudacov.oscon.KeyedDataPoint;
->>>>>>> 12-timestamps-correction:src/main/java/de/tuberlin/tubit/gitlab/anton/rudacov/DataGeneratorTime.java
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
