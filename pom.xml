@@ -10,13 +10,14 @@
   <name>DBPRO IoT Framework</name>
   <url>https://gitlab.tubit.tu-berlin.de/anton.rudacov/DBPRO-IoT-Framework</url>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <flink.version>1.4.2</flink.version>
-    <slf4j.version>1.7.7</slf4j.version>
-    <log4j.version>1.2.17</log4j.version>
-    <scala.binary.version>2.11</scala.binary.version>
-  </properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <flink.version>1.4.2</flink.version>
+        <slf4j.version>1.7.7</slf4j.version>
+        <log4j.version>1.2.17</log4j.version>
+        <scala.binary.version>2.11</scala.binary.version>
+        <influxdb-client.version>2.7</influxdb-client.version>
+    </properties>
 
   <repositories>
     <repository>
@@ -144,6 +145,16 @@
           <version>1.4.2</version>
         </dependency>
         <!-- Might not be useful here
+        <dependency>
+            <groupId>org.influxdb</groupId>
+            <artifactId>influxdb-java</artifactId>
+            <version>${influxdb-client.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.bahir</groupId>
+            <artifactId>flink-connector-influxdb_2.11</artifactId>
+            <version>1.1-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

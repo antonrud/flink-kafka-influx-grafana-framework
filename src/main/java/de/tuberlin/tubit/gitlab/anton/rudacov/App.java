@@ -27,6 +27,7 @@ public class App {
         App.log('i', "Yay! App started!");
 
         /* Drop previous measurements in InfluxDB */
+<<<<<<< HEAD
         InfluxDB influxDB = InfluxDBFactory.connect(App.INFLUX_URL, App.INFLUX_USER, App.INFLUX_PASS);
         influxDB.setDatabase(App.INFLUX_DATABASE);
         Query query = new Query("DROP MEASUREMENT morseMeasurement", App.INFLUX_DATABASE);
@@ -39,6 +40,26 @@ public class App {
 
         /* Starting data generator */
         (new Thread(new DataGenerator(DATA_PATH))).start();
+=======
+        dropMeasurement();
+
+        /* Starting Flink consumer */
+        (new Thread(new FlinkConsumer())).start();
+
+        /* Starting data generator */
+        //(new Thread(new DataGenerator(DATA_PATH))).start();
+        (new Thread(new DataGeneratorTime(DATA_PATH))).start();
+    }
+
+    private static void dropMeasurement() {
+
+        InfluxDB influxDB = InfluxDBFactory.connect(App.INFLUX_URL, App.INFLUX_USER, App.INFLUX_PASS);
+        influxDB.setDatabase(App.INFLUX_DATABASE);
+        Query query = new Query("DROP MEASUREMENT morseMeasurement", App.INFLUX_DATABASE);
+        influxDB.query(query);
+        influxDB.close();
+        App.log('i', "Database droped!");
+>>>>>>> 12-timestamps-correction
     }
 
     public static void log(char type, String message) {

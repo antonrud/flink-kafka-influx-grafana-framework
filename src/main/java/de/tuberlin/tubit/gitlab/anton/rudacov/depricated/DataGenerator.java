@@ -1,11 +1,16 @@
-package de.tuberlin.tubit.gitlab.anton.rudacov;
+package de.tuberlin.tubit.gitlab.anton.rudacov.depricated;
 
+import de.tuberlin.tubit.gitlab.anton.rudacov.App;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer011;
 
+<<<<<<< HEAD:src/main/java/de/tuberlin/tubit/gitlab/anton/rudacov/DataGenerator.java
+=======
+
+>>>>>>> 12-timestamps-correction:src/main/java/de/tuberlin/tubit/gitlab/anton/rudacov/depricated/DataGenerator.java
 public class DataGenerator implements Runnable {
 
     private String dataPath;
@@ -16,6 +21,7 @@ public class DataGenerator implements Runnable {
 
     private void produce() throws Exception {
 
+<<<<<<< HEAD:src/main/java/de/tuberlin/tubit/gitlab/anton/rudacov/DataGenerator.java
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
         //To work with event time, streaming programs need to set the time characteristic.
@@ -34,6 +40,8 @@ public class DataGenerator implements Runnable {
         env.execute();
     }
 
+=======
+>>>>>>> 12-timestamps-correction:src/main/java/de/tuberlin/tubit/gitlab/anton/rudacov/depricated/DataGenerator.java
     @Override
     public void run() {
         App.log('i', "Generator starting...");
