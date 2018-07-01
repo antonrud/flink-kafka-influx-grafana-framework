@@ -55,12 +55,9 @@ public class App {
         env.setParallelism(1);
         env.disableOperatorChaining();
 
-        final int SLOWDOWN_FACTOR = 1;
-        final int PERIOD_MS = 100;
-
         // Initial data - just timestamped messages
         DataStreamSource<DataPoint<Long>> timestampSource =
-                env.addSource(new TimestampSource(PERIOD_MS, SLOWDOWN_FACTOR), "test data");
+                env.addSource(new TimestampSource(), "Morse timestamps");
 
         // Transform into sawtooth pattern
         SingleOutputStreamOperator<DataPoint<Double>> sawtoothStream = timestampSource
