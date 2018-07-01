@@ -73,6 +73,8 @@ public class App {
                 .map(new AssignKeyFunction("resistance"))
                 .name("Resistance Data");
 
+        //TODO 0-1 code interpretation and 'union' into a collective stream
+
         return resistanceStream;
     }
 }
