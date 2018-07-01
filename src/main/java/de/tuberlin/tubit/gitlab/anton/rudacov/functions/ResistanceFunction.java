@@ -25,6 +25,7 @@ public class ResistanceFunction extends RichMapFunction<DataPoint<Long>, DataPoi
         try {
             this.values = Files
                     .lines(Paths.get(path))
+                    .sorted()
                     .map(line -> line.substring(13).trim())
                     .map(str -> Integer.parseInt(str))
                     .collect(Collectors.toCollection(ArrayList::new));
