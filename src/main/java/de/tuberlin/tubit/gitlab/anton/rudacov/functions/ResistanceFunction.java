@@ -12,14 +12,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MorseDataFunction extends RichMapFunction<DataPoint<Long>, DataPoint<Integer>> implements ListCheckpointed<Integer> {
+public class ResistanceFunction extends RichMapFunction<DataPoint<Long>, DataPoint<Integer>> implements ListCheckpointed<Integer> {
 
     private ArrayList<Integer> values;
 
     // State!
     private int currentStep;
 
-    public MorseDataFunction(String path) {
+    public ResistanceFunction(String path) {
 
         //Get and parse measurement data from file
         try {

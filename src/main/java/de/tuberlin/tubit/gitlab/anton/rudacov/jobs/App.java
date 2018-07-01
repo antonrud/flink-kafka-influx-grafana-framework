@@ -3,7 +3,7 @@ package de.tuberlin.tubit.gitlab.anton.rudacov.jobs;
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.DataPoint;
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.KeyedDataPoint;
 import de.tuberlin.tubit.gitlab.anton.rudacov.functions.AssignKeyFunction;
-import de.tuberlin.tubit.gitlab.anton.rudacov.functions.MorseDataFunction;
+import de.tuberlin.tubit.gitlab.anton.rudacov.functions.ResistanceFunction;
 import de.tuberlin.tubit.gitlab.anton.rudacov.sinks.InfluxDBSink;
 import de.tuberlin.tubit.gitlab.anton.rudacov.sources.TimestampSource;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
@@ -21,17 +21,20 @@ public class App {
         final StreamExecutionEnvironment env =
                 StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // Uncomment this line to enable fault-tolerance for state
+        // Enable fault-tolerance for state
         env.enableCheckpointing(1000);
 
-        // Uncomment this line to enable Event Time
+        // Enable Event Time processing
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
-        // Simulate some sensor data
-        DataStream<KeyedDataPoint<Double>> sensorStream = generateSensorData(env);
+        // Generate stream with sensor data
+        DataStream<KeyedDataPoint<Integer>> sensorStream = generateSensorData(env);
 
-        // Write this sensor stream out to InfluxDB
-        //TODO Rewrite Influx SInk
+        // Uncomment this to check the stream in the console
+        //sensorStream.print();
+
+        // Writes sensor stream out to InfluxDB
+        //TODO Rewrite Influx Sink
         sensorStream
                 .addSink(new InfluxDBSink<>("morse"));
 
@@ -49,7 +52,7 @@ public class App {
         env.execute("Morse code");
     }
 
-    private static DataStream<KeyedDataPoint<Double>> generateSensorData(StreamExecutionEnvironment env) {
+    private static DataStream<KeyedDataPoint<Integer>> generateSensorData(StreamExecutionEnvironment env) {
 
         // Some boiler plate settings
         env.setRestartStrategy(RestartStrategies.fixedDelayRestart(1000, 1000));
@@ -61,15 +64,15 @@ public class App {
                 env.addSource(new TimestampSource(), "Morse Timestamps");
 
         // Transform into sawtooth pattern
-        SingleOutputStreamOperator<DataPoint<Integer>> sawtoothStream = timestampSource
-                .map(new MorseDataFunction("resources/sepiapro-morsedata-all.csv"))
+        SingleOutputStreamOperator<DataPoint<Integer>> morseDataStream = timestampSource
+                .map(new ResistanceFunction("resources/sepiapro-morsedata-all.csv"))
                 .name("Morse Data");
 
         // Simulate temp sensor
-        SingleOutputStreamOperator<KeyedDataPoint<Integer>> tempStream = sawtoothStream
-                .map(new AssignKeyFunction("morse"))
-                .name("Keyed Morse Data");
+        SingleOutputStreamOperator<KeyedDataPoint<Integer>> resistanceStream = morseDataStream
+                .map(new AssignKeyFunction("resistance"))
+                .name("Resistance Data");
 
-        return tempStream;
+        return resistanceStream;
     }
 }

@@ -1,7 +1,8 @@
+/*
 package de.tuberlin.tubit.gitlab.anton.rudacov.mappers;
 
 import de.tuberlin.tubit.gitlab.anton.rudacov.App;
-import de.tuberlin.tubit.gitlab.anton.rudacov.oscon.KeyedDataPoint;
+import de.tuberlin.tubit.gitlab.anton.rudacov.data.KeyedDataPoint;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
 import java.time.LocalDate;
@@ -20,6 +21,9 @@ public class ProducerRecordMapper {
         long timestamp = dateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant().toEpochMilli();
         KeyedDataPoint<String> keyedDataPoint = new KeyedDataPoint<>(key, timestamp, value);
 
-        return new ProducerRecord(App.KAFKA_TOPIC, 0 /*Migth be wrong*/, timestamp, key, keyedDataPoint);
+        return new ProducerRecord(App.KAFKA_TOPIC, 0 */
+/*Migth be wrong*//*
+, timestamp, key, keyedDataPoint);
     }
 }
+*/

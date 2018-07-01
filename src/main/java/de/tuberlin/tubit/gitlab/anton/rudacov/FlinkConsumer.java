@@ -1,3 +1,4 @@
+/*
 package de.tuberlin.tubit.gitlab.anton.rudacov;
 
 import de.tuberlin.tubit.gitlab.anton.rudacov.mappers.InfluxDBMapper;
@@ -64,3 +65,4 @@ public class FlinkConsumer implements Runnable {
         }
     }
 }
+*/

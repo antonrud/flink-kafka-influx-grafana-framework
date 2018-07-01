@@ -1,3 +1,4 @@
+/*
 package de.tuberlin.tubit.gitlab.anton.rudacov;
 
 import de.tuberlin.tubit.gitlab.anton.rudacov.deprecated.DataGenerator;
@@ -28,7 +29,9 @@ public class App {
     public static void main(String[] args) throws IOException {
         App.log('i', "Yay! App started!");
 
-        /* Drop previous measurements in InfluxDB */
+        */
+/* Drop previous measurements in InfluxDB *//*
+
         InfluxDB influxDB = InfluxDBFactory.connect(App.INFLUX_URL, App.INFLUX_USER, App.INFLUX_PASS);
         influxDB.setDatabase(App.INFLUX_DATABASE);
         Query query = new Query("DROP MEASUREMENT morseMeasurement", App.INFLUX_DATABASE);
@@ -36,18 +39,26 @@ public class App {
         influxDB.close();
         App.log('i', "Database droped!");
 
-        /* Starting Flink consumer */
+        */
+/* Starting Flink consumer *//*
+
         (new Thread(new FlinkConsumer())).start();
 
-        /* Starting data generator */
+        */
+/* Starting data generator *//*
+
         (new Thread(new DataGenerator(DATA_PATH))).start();
 
         dropMeasurement();
 
-        /* Starting Flink consumer */
+        */
+/* Starting Flink consumer *//*
+
         (new Thread(new FlinkConsumer())).start();
 
-        /* Starting data generator */
+        */
+/* Starting data generator *//*
+
         //(new Thread(new DataGenerator(DATA_PATH))).start();
         (new Thread(new DataGeneratorTime(DATA_PATH))).start();
     }
@@ -104,4 +115,4 @@ public class App {
 
         System.out.println(logEvent);
     }
-}
+}*/

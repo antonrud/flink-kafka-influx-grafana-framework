@@ -1,3 +1,4 @@
+/*
 package de.tuberlin.tubit.gitlab.anton.rudacov.mappers;
 
 import de.tuberlin.tubit.gitlab.anton.rudacov.oscon.KeyedDataPoint;
@@ -29,4 +30,4 @@ public class InfluxDBMapper extends RichMapFunction<KeyedDataPoint<String>, Infl
 
         return new InfluxDBPoint(measurement, timestamp, tags, fields);
     }
-}
+}*/
