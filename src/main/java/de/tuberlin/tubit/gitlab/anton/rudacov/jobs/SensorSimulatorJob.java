@@ -5,7 +5,7 @@ import de.tuberlin.tubit.gitlab.anton.rudacov.data.DataPoint;
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.DataPointSerializationSchema;
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.KeyedDataPoint;
 import de.tuberlin.tubit.gitlab.anton.rudacov.functions.AssignKeyFunction;
-import de.tuberlin.tubit.gitlab.anton.rudacov.functions.SawtoothFunction;
+import de.tuberlin.tubit.gitlab.anton.rudacov.functions.MorseDataFunction;
 import de.tuberlin.tubit.gitlab.anton.rudacov.functions.SineWaveFunction;
 import de.tuberlin.tubit.gitlab.anton.rudacov.functions.SquareWaveFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -31,7 +31,7 @@ public class SensorSimulatorJob {
 
     // Transform into sawtooth pattern
     SingleOutputStreamOperator<DataPoint<Double>> sawtoothStream = timestampSource
-      .map(new SawtoothFunction(10))
+      .map(new MorseDataFunction(10))
       .name("sawTooth");
 
     // Simulate temp sensor

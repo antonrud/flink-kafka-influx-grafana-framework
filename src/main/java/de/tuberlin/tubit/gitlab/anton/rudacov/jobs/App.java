@@ -3,7 +3,7 @@ package de.tuberlin.tubit.gitlab.anton.rudacov.jobs;
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.DataPoint;
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.KeyedDataPoint;
 import de.tuberlin.tubit.gitlab.anton.rudacov.functions.AssignKeyFunction;
-import de.tuberlin.tubit.gitlab.anton.rudacov.functions.SawtoothFunction;
+import de.tuberlin.tubit.gitlab.anton.rudacov.functions.MorseDataFunction;
 import de.tuberlin.tubit.gitlab.anton.rudacov.sinks.InfluxDBSink;
 import de.tuberlin.tubit.gitlab.anton.rudacov.sources.TimestampSource;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
@@ -31,11 +31,12 @@ public class App {
         DataStream<KeyedDataPoint<Double>> sensorStream = generateSensorData(env);
 
         // Write this sensor stream out to InfluxDB
+        //TODO Rewrite Influx SInk
         sensorStream
                 .addSink(new InfluxDBSink<>("morse"));
 
 
-        //TODO Replace this by Morse interpretation logic
+        //TODO Replace this by Morse interpretation logic and sink to Influx
         // Compute a windowed sum over this data and write that to InfluxDB as well.
 /*        sensorStream
                 .keyBy("key")
@@ -57,17 +58,17 @@ public class App {
 
         // Initial data - just timestamped messages
         DataStreamSource<DataPoint<Long>> timestampSource =
-                env.addSource(new TimestampSource(), "Morse timestamps");
+                env.addSource(new TimestampSource(), "Morse Timestamps");
 
         // Transform into sawtooth pattern
-        SingleOutputStreamOperator<DataPoint<Double>> sawtoothStream = timestampSource
-                .map(new SawtoothFunction(10))
-                .name("sawTooth");
+        SingleOutputStreamOperator<DataPoint<Integer>> sawtoothStream = timestampSource
+                .map(new MorseDataFunction("resources/sepiapro-morsedata-all.csv"))
+                .name("Morse Data");
 
         // Simulate temp sensor
-        SingleOutputStreamOperator<KeyedDataPoint<Double>> tempStream = sawtoothStream
-                .map(new AssignKeyFunction("temp"))
-                .name("assignKey(temp)");
+        SingleOutputStreamOperator<KeyedDataPoint<Integer>> tempStream = sawtoothStream
+                .map(new AssignKeyFunction("morse"))
+                .name("Keyed Morse Data");
 
         return tempStream;
     }
