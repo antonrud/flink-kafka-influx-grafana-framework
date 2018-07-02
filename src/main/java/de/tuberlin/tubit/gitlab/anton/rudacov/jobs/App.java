@@ -38,7 +38,7 @@ public class App {
                 .addSink(new InfluxDBSink<>("morse"));
 
 
-        //TODO Replace this by Morse interpretation logic and sink to Influx
+        //TODO Replace with Morse interpretation logic and sink to Influx as well
         // Compute a windowed sum over this data and write that to InfluxDB as well.
         // Compute a windowed sum over this data and write that to InfluxDB as well.
 /*        sensorStream
@@ -65,12 +65,12 @@ public class App {
         DataStreamSource<DataPoint<Long>> timestampSource =
                 env.addSource(new TimestampSource(), "Morse Timestamps");
 
-        // Transform into sawtooth pattern
+        // Add resistance data
         SingleOutputStreamOperator<DataPoint<Integer>> morseDataStream = timestampSource
                 .map(new ResistanceFunction("resources/sepiapro-morsedata-all.csv"))
                 .name("Morse Data");
 
-        // Simulate temp sensor
+        // Add keys to DataPoints
         SingleOutputStreamOperator<KeyedDataPoint<Integer>> resistanceStream = morseDataStream
                 .map(new AssignKeyFunction("resistance"))
                 .name("Resistance Data");

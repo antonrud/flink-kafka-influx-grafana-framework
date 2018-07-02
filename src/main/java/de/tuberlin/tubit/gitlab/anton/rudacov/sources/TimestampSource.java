@@ -34,6 +34,7 @@ public class TimestampSource extends RichSourceFunction<DataPoint<Long>> impleme
 
     @Override
     public void run(SourceContext<DataPoint<Long>> ctx) throws Exception {
+
         while (running) {
             synchronized (ctx.getCheckpointLock()) {
                 ctx.collectWithTimestamp(new DataPoint<>(currentTimeMs, 0L), currentTimeMs);
