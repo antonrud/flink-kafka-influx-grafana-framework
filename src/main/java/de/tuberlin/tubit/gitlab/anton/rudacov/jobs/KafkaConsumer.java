@@ -2,18 +2,17 @@ package de.tuberlin.tubit.gitlab.anton.rudacov.jobs;
 
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.DataPointSerializationSchema;
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.KeyedDataPoint;
-import de.tuberlin.tubit.gitlab.anton.rudacov.functions.SensorDataWatermarkAssigner;
+import de.tuberlin.tubit.gitlab.anton.rudacov.functions.MorseWatermarkAssigner;
 import de.tuberlin.tubit.gitlab.anton.rudacov.sinks.InfluxDBSink;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer011;
 
 import java.util.Properties;
 
-public class AppKafka {
+public class KafkaConsumer {
 
     public static void main(String[] args) throws Exception {
 
@@ -42,20 +41,21 @@ public class AppKafka {
         // Add it as a source
         SingleOutputStreamOperator<KeyedDataPoint<Integer>> morseStream = env.addSource(kafkaConsumer);
 
-        morseStream = morseStream.assignTimestampsAndWatermarks(new SensorDataWatermarkAssigner());
+        morseStream = morseStream.assignTimestampsAndWatermarks(new MorseWatermarkAssigner());
 
-        // Write this sensor stream out to InfluxDB
+        // Write this stream out to InfluxDB
         morseStream
-                .addSink(new InfluxDBSink<>("sensors"));
+                .addSink(new InfluxDBSink<>("kafkaMorse"));
 
+        //TODO Replace with Morse interpretation logic and sink to Influx as well
         // Compute a windowed sum over this data and write that to InfluxDB as well.
-        morseStream
+        /* morseStream
                 .keyBy("key")
                 .timeWindow(Time.seconds(1))
                 .sum("value")
-                .addSink(new InfluxDBSink<>("summedSensors"));
+                .addSink(new InfluxDBSink<>("summedSensors")); */
 
         // execute program
-        env.execute("OSCON Example");
+        env.execute("Morse Kafka");
     }
 }

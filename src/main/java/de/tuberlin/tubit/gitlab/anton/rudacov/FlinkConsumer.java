@@ -2,7 +2,7 @@ package de.tuberlin.tubit.gitlab.anton.rudacov;
 
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.DataPointSerializationSchema;
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.KeyedDataPoint;
-import de.tuberlin.tubit.gitlab.anton.rudacov.functions.SensorDataWatermarkAssigner;
+import de.tuberlin.tubit.gitlab.anton.rudacov.functions.MorseWatermarkAssigner;
 import de.tuberlin.tubit.gitlab.anton.rudacov.mappers.InfluxDBMapper;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
@@ -44,7 +44,7 @@ public class FlinkConsumer implements Runnable {
         InfluxDBConfig influxDBConfig = new InfluxDBConfig(InfluxDBConfig.builder(App.INFLUX_URL, App.INFLUX_USER, App.INFLUX_PASS, App.INFLUX_DATABASE));
 
         sensorStream
-                .assignTimestampsAndWatermarks(new SensorDataWatermarkAssigner<>())
+                .assignTimestampsAndWatermarks(new MorseWatermarkAssigner<>())
                 .map(new InfluxDBMapper()).addSink(new InfluxDBSink(influxDBConfig));
 
         sensorStream
