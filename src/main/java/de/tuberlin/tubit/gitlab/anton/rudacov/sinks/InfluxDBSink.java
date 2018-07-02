@@ -15,7 +15,6 @@ import java.util.concurrent.TimeUnit;
 public class InfluxDBSink<T extends DataPoint<? extends Number>> extends RichSinkFunction<T> {
 
     private static String dataBaseName = "morse";
-    private static String fieldName = "value";
     private transient InfluxDB influxDB = null;
 
     private String measurement;
@@ -45,7 +44,8 @@ public class InfluxDBSink<T extends DataPoint<? extends Number>> extends RichSin
 
         Point.Builder builder = Point.measurement(measurement)
                 .time(dataPoint.getTimeStampMs(), TimeUnit.MILLISECONDS) //Maybe here?
-                .addField(fieldName, dataPoint.getValue());
+                .addField("value", dataPoint.getValue())
+                .addField("code", dataPoint.getValue().intValue() > 7500 ? 0 : 1);
 
         if (dataPoint instanceof KeyedDataPoint) {
             builder.tag("key", ((KeyedDataPoint) dataPoint).getKey());
