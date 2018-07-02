@@ -6,6 +6,7 @@ import de.tuberlin.tubit.gitlab.anton.rudacov.functions.AssignKeyFunction;
 import de.tuberlin.tubit.gitlab.anton.rudacov.functions.ResistanceFunction;
 import de.tuberlin.tubit.gitlab.anton.rudacov.sinks.InfluxDBSink;
 import de.tuberlin.tubit.gitlab.anton.rudacov.sources.TimestampSource;
+import de.tuberlin.tubit.gitlab.anton.rudacov.tools.MeasurementDrop;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -16,6 +17,9 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 public class App {
 
     public static void main(String[] args) throws Exception {
+
+        // Drop previous measurements
+        MeasurementDrop.drop();
 
         // set up the execution environment
         final StreamExecutionEnvironment env =
