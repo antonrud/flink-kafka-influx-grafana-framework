@@ -41,6 +41,7 @@ public class App {
         sensorStream
                 .addSink(new InfluxDBSink<>("morse"));
 
+        //TODO Add here sink to Kafka
 
         //TODO Replace with Morse interpretation logic and sink to Influx as well
         // Compute a windowed sum over this data and write that to InfluxDB as well.
