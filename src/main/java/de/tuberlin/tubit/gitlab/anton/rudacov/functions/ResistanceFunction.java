@@ -22,6 +22,7 @@ public class ResistanceFunction extends RichMapFunction<DataPoint<Long>, DataPoi
     public ResistanceFunction(String path) {
 
         //Get and parse measurement data from file
+        System.out.println("[INFO] Start reading Morse file ...");
         try {
             this.values = Files
                     .lines(Paths.get(path))
@@ -32,6 +33,7 @@ public class ResistanceFunction extends RichMapFunction<DataPoint<Long>, DataPoi
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("[INFO] Reading Morse file ready!");
 
         this.currentStep = 0;
     }

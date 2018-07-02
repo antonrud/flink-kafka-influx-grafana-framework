@@ -16,7 +16,7 @@
     <slf4j.version>1.7.19</slf4j.version>
     <log4j.version>1.2.17</log4j.version>
     <scala.binary.version>2.11</scala.binary.version>
-    <influxdb-client.version>2.7</influxdb-client.version>
+    <influxdb-client.version>2.10</influxdb-client.version>
   </properties>
 
   <repositories>
