@@ -40,16 +40,16 @@ public class AppKafka {
                 new FlinkKafkaConsumer011<>("morse", new DataPointSerializationSchema(), kafkaProperties);
 
         // Add it as a source
-        SingleOutputStreamOperator<KeyedDataPoint<Double>> sensorStream = env.addSource(kafkaConsumer);
+        SingleOutputStreamOperator<KeyedDataPoint<Integer>> morseStream = env.addSource(kafkaConsumer);
 
-        sensorStream = sensorStream.assignTimestampsAndWatermarks(new SensorDataWatermarkAssigner());
+        morseStream = morseStream.assignTimestampsAndWatermarks(new SensorDataWatermarkAssigner());
 
         // Write this sensor stream out to InfluxDB
-        sensorStream
+        morseStream
                 .addSink(new InfluxDBSink<>("sensors"));
 
         // Compute a windowed sum over this data and write that to InfluxDB as well.
-        sensorStream
+        morseStream
                 .keyBy("key")
                 .timeWindow(Time.seconds(1))
                 .sum("value")

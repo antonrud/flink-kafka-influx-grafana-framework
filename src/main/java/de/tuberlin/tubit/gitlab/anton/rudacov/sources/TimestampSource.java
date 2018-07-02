@@ -38,7 +38,7 @@ public class TimestampSource extends RichSourceFunction<DataPoint<Long>> impleme
         while (running) {
             synchronized (ctx.getCheckpointLock()) {
                 ctx.collectWithTimestamp(new DataPoint<>(currentTimeMs, 0L), currentTimeMs);
-                ctx.emitWatermark(new Watermark(currentTimeMs - 2000));
+                ctx.emitWatermark(new Watermark(currentTimeMs));
 
                 currentTimeMs += 31;
 
