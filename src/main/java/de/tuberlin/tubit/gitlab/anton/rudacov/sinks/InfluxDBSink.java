@@ -14,9 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 public class InfluxDBSink<T extends DataPoint<? extends Number>> extends RichSinkFunction<T> {
 
-    private static String dataBaseName = "morse";
     private transient InfluxDB influxDB = null;
-
     private String measurement;
 
     public InfluxDBSink(String measurement) {
@@ -29,7 +27,7 @@ public class InfluxDBSink<T extends DataPoint<? extends Number>> extends RichSin
         super.open(parameters);
 
         influxDB = InfluxDBFactory.connect("http://217.163.23.24:8086", "admin", "DBPROgruppe3");
-        influxDB.setDatabase(dataBaseName);
+        influxDB.setDatabase("morse");
         influxDB.enableBatch(BatchOptions.DEFAULTS);
         influxDB.setLogLevel(InfluxDB.LogLevel.FULL);
     }
