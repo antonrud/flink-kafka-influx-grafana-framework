@@ -43,7 +43,7 @@ public class InfluxDBSink<T extends DataPoint<? extends Number>> extends RichSin
     public void invoke(T dataPoint, SinkFunction.Context context) throws Exception {
 
         Point.Builder builder = Point.measurement(measurement)
-                .time(dataPoint.getTimeStampMs(), TimeUnit.MILLISECONDS) //Maybe here?
+                .time(dataPoint.getTimeStampMs(), TimeUnit.MILLISECONDS)
                 .addField("value", dataPoint.getValue())
                 .addField("code", dataPoint.getValue().intValue() > 7500 ? 0 : 1);
 
@@ -52,9 +52,6 @@ public class InfluxDBSink<T extends DataPoint<? extends Number>> extends RichSin
         }
 
         Point point = builder.build();
-
-        // Uncomment this to check created Influx points
-        //System.out.println(point.toString());
 
         influxDB.write(point);
     }

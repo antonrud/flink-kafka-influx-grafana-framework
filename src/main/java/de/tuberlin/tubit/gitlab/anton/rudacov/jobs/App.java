@@ -34,12 +34,12 @@ public class App {
         //sensorStream.print();
 
         // Writes sensor stream out to InfluxDB
-        //TODO Rewrite Influx Sink
         sensorStream
                 .addSink(new InfluxDBSink<>("morse"));
 
 
         //TODO Replace this by Morse interpretation logic and sink to Influx
+        // Compute a windowed sum over this data and write that to InfluxDB as well.
         // Compute a windowed sum over this data and write that to InfluxDB as well.
 /*        sensorStream
                 .keyBy("key")
@@ -74,8 +74,6 @@ public class App {
         SingleOutputStreamOperator<KeyedDataPoint<Integer>> resistanceStream = morseDataStream
                 .map(new AssignKeyFunction("resistance"))
                 .name("Resistance Data");
-
-        //TODO 0-1 code interpretation and 'union' into a collective stream
 
         return resistanceStream;
     }
