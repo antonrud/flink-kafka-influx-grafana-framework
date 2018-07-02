@@ -42,6 +42,7 @@ public class App {
                 .addSink(new InfluxDBSink<>("morse"));
 
         //TODO Add here sink to Kafka
+        //KafkaConsumer.main(new String[0]);
 
         //TODO Replace with Morse interpretation logic and sink to Influx as well
         // Compute a windowed sum over this data and write that to InfluxDB as well.

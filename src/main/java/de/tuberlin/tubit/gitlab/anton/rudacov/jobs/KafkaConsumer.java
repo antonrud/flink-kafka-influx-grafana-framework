@@ -55,7 +55,7 @@ public class KafkaConsumer {
                 .sum("value")
                 .addSink(new InfluxDBSink<>("summedSensors")); */
 
-        // execute program
+        // Execute Flink
         env.execute("Morse Kafka");
     }
 }
