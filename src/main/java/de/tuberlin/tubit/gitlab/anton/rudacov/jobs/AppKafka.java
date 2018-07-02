@@ -9,7 +9,7 @@ import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.time.Time;
-import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer09;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer011;
 
 import java.util.Properties;
 
@@ -32,12 +32,12 @@ public class AppKafka {
         // Data Processor
         // Kafka consumer properties
         Properties kafkaProperties = new Properties();
-        kafkaProperties.setProperty("bootstrap.servers", "localhost:9092");
-        kafkaProperties.setProperty("group.id", "oscon-demo-group");
+        kafkaProperties.setProperty("bootstrap.servers", "217.163.23.24:9092");
+        kafkaProperties.setProperty("group.id", "morse");
 
         // Create Kafka Consumer
-        FlinkKafkaConsumer09<KeyedDataPoint<Double>> kafkaConsumer =
-                new FlinkKafkaConsumer09<>("sensors", new DataPointSerializationSchema(), kafkaProperties);
+        FlinkKafkaConsumer011<KeyedDataPoint<Integer>> kafkaConsumer =
+                new FlinkKafkaConsumer011<>("morse", new DataPointSerializationSchema(), kafkaProperties);
 
         // Add it as a source
         SingleOutputStreamOperator<KeyedDataPoint<Double>> sensorStream = env.addSource(kafkaConsumer);

@@ -1,10 +1,9 @@
-/*
 package de.tuberlin.tubit.gitlab.anton.rudacov;
 
-import de.tuberlin.tubit.gitlab.anton.rudacov.mappers.InfluxDBMapper;
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.DataPointSerializationSchema;
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.KeyedDataPoint;
 import de.tuberlin.tubit.gitlab.anton.rudacov.functions.SensorDataWatermarkAssigner;
+import de.tuberlin.tubit.gitlab.anton.rudacov.mappers.InfluxDBMapper;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -66,4 +65,4 @@ public class FlinkConsumer implements Runnable {
     }
 }
 
-*/
+
