@@ -57,7 +57,9 @@ public class App {
         // Some boiler plate settings
         env.setRestartStrategy(RestartStrategies.fixedDelayRestart(1000, 1000));
         env.setParallelism(1);
-        env.disableOperatorChaining();
+
+        // This must be disabled!!! Otherwise faulty timestamps.
+        //env.disableOperatorChaining();
 
         // Initial data - just timestamped messages
         DataStreamSource<DataPoint<Long>> timestampSource =
