@@ -12,13 +12,16 @@ import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer011;
 
 import java.util.Properties;
 
-public class KafkaConsumer {
+public class KafkaConsumer implements Runnable {
 
-    public static void main(String[] args) throws Exception {
+    private final StreamExecutionEnvironment env =
+            StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // set up the execution environment
-        final StreamExecutionEnvironment env =
-                StreamExecutionEnvironment.getExecutionEnvironment();
+    public KafkaConsumer() {
+
+    }
+
+    private void consume() throws Exception {
 
         // Common Flink settings
         env.setRestartStrategy(RestartStrategies.fixedDelayRestart(1000, 1000));
@@ -57,5 +60,14 @@ public class KafkaConsumer {
 
         // Execute Flink
         env.execute("Morse Kafka");
+    }
+
+    @Override
+    public void run() {
+        try {
+            consume();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
