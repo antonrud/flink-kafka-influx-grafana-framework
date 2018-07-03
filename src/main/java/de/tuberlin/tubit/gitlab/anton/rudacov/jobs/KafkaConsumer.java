@@ -2,7 +2,6 @@ package de.tuberlin.tubit.gitlab.anton.rudacov.jobs;
 
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.DataPointSerializationSchema;
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.KeyedDataPoint;
-import de.tuberlin.tubit.gitlab.anton.rudacov.functions.MorseWatermarkAssigner;
 import de.tuberlin.tubit.gitlab.anton.rudacov.sinks.InfluxDBSink;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.streaming.api.TimeCharacteristic;
@@ -31,7 +30,6 @@ public class KafkaConsumer implements Runnable {
         //env.disableOperatorChaining();
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
-        // Data Processor
         // Kafka consumer properties
         Properties kafkaProperties = new Properties();
         kafkaProperties.setProperty("bootstrap.servers", "217.163.23.24:9092");
@@ -42,17 +40,15 @@ public class KafkaConsumer implements Runnable {
                 new FlinkKafkaConsumer011<>("morse", new DataPointSerializationSchema(), kafkaProperties);
 
         // Add it as a source
-        SingleOutputStreamOperator<KeyedDataPoint<Integer>> morseStream = env.addSource(kafkaConsumer);
-
-        morseStream = morseStream.assignTimestampsAndWatermarks(new MorseWatermarkAssigner());
+        SingleOutputStreamOperator<KeyedDataPoint<Integer>> morseKafkaStream = env.addSource(kafkaConsumer);
 
         // Write this stream out to InfluxDB
-        morseStream
+        morseKafkaStream
                 .addSink(new InfluxDBSink<>("kafkaMorse"));
 
         //TODO Replace with Morse interpretation logic and sink to Influx as well
         // Compute a windowed sum over this data and write that to InfluxDB as well.
-        /* morseStream
+        /* morseKafkaStream
                 .keyBy("key")
                 .timeWindow(Time.seconds(1))
                 .sum("value")

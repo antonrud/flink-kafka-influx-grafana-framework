@@ -11,20 +11,19 @@ public class MeasurementDrop {
     private static final String INFLUX_USER = "admin";
     private static final String INFLUX_PASS = "DBPROgruppe3";
     private static final String INFLUX_DATABASE = "morse";
-    private static final String INFLUX_MEASUREMENT = "morse";
 
     private MeasurementDrop() {
         // This class contains only static methods
     }
 
-    public static void drop() {
+    public static void drop(String measurement) {
 
         /* Drop previous measurements in InfluxDB */
         InfluxDB influxDB = InfluxDBFactory.connect(INFLUX_URL, INFLUX_USER, INFLUX_PASS);
         influxDB.setDatabase(INFLUX_DATABASE);
-        Query query = new Query("DROP MEASUREMENT " + INFLUX_MEASUREMENT, INFLUX_DATABASE);
+        Query query = new Query("DROP MEASUREMENT " + measurement, INFLUX_DATABASE);
         influxDB.query(query);
         influxDB.close();
-        System.out.println("[INFO] Measurement droped!");
+        System.out.println("[INFO] Measurement '" + measurement + "' droped!");
     }
 }

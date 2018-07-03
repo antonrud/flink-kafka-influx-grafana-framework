@@ -4,7 +4,9 @@ import de.tuberlin.tubit.gitlab.anton.rudacov.data.DataPoint;
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.DataPointSerializationSchema;
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.KeyedDataPoint;
 import de.tuberlin.tubit.gitlab.anton.rudacov.functions.AssignKeyFunction;
+import de.tuberlin.tubit.gitlab.anton.rudacov.functions.MorseWatermarkAssigner;
 import de.tuberlin.tubit.gitlab.anton.rudacov.functions.ResistanceFunction;
+import de.tuberlin.tubit.gitlab.anton.rudacov.sinks.InfluxDBSink;
 import de.tuberlin.tubit.gitlab.anton.rudacov.sources.TimestampSource;
 import de.tuberlin.tubit.gitlab.anton.rudacov.tools.MeasurementDrop;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
@@ -22,8 +24,12 @@ public class App {
 
     public static void main(String[] args) throws Exception {
 
+        // Start Kafka consumer
+        new Thread(new KafkaConsumer()).start();
+
         // Drop previous measurements
-        MeasurementDrop.drop();
+        MeasurementDrop.drop("morse");
+        MeasurementDrop.drop("kafkaMorse");
 
         // set up the execution environment
         final StreamExecutionEnvironment env =
@@ -35,28 +41,23 @@ public class App {
         // Enable Event Time processing
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
-        // Generate stream with sensor data
-        DataStream<KeyedDataPoint<Integer>> sensorStream = generateSensorData(env);
-
-        // Uncomment this to check the stream in the console
-        //sensorStream.print();
+        // Generate stream with morse data
+        DataStream<KeyedDataPoint<Integer>> morseStream = generateSensorData(env);
 
         // Writes sensor stream out to InfluxDB
-        //sensorStream
-        //      .addSink(new InfluxDBSink<>("morse"));
+        morseStream
+                .addSink(new InfluxDBSink<>("morse"));
 
-        //TODO Add here sink to Kafka
-        sensorStream
+        //Sink to Kafka
+        morseStream
+                .assignTimestampsAndWatermarks(new MorseWatermarkAssigner())
                 .addSink(new FlinkKafkaProducer011<>(KAFKA_BROKER, KAFKA_TOPIC, new DataPointSerializationSchema()));
-        //KafkaConsumer.main(new String[0]);
-
-
 
 
         //TODO Replace with Morse interpretation logic and sink to Influx as well
         // Compute a windowed sum over this data and write that to InfluxDB as well.
         // Compute a windowed sum over this data and write that to InfluxDB as well.
-/*        sensorStream
+/*        sensonStream
                 .keyBy("key")
                 .timeWindow(Time.seconds(1))
                 .sum("value")
