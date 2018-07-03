@@ -1,10 +1,10 @@
 package de.tuberlin.tubit.gitlab.anton.rudacov.jobs;
 
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.DataPoint;
+import de.tuberlin.tubit.gitlab.anton.rudacov.data.DataPointSerializationSchema;
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.KeyedDataPoint;
 import de.tuberlin.tubit.gitlab.anton.rudacov.functions.AssignKeyFunction;
 import de.tuberlin.tubit.gitlab.anton.rudacov.functions.ResistanceFunction;
-import de.tuberlin.tubit.gitlab.anton.rudacov.sinks.InfluxDBSink;
 import de.tuberlin.tubit.gitlab.anton.rudacov.sources.TimestampSource;
 import de.tuberlin.tubit.gitlab.anton.rudacov.tools.MeasurementDrop;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
@@ -13,8 +13,12 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer011;
 
 public class App {
+
+    public static final String KAFKA_BROKER = "217.163.23.24:9092";
+    public static final String KAFKA_TOPIC = "morse";
 
     public static void main(String[] args) throws Exception {
 
@@ -38,11 +42,15 @@ public class App {
         //sensorStream.print();
 
         // Writes sensor stream out to InfluxDB
-        sensorStream
-                .addSink(new InfluxDBSink<>("morse"));
+        //sensorStream
+        //      .addSink(new InfluxDBSink<>("morse"));
 
         //TODO Add here sink to Kafka
+        sensorStream
+                .addSink(new FlinkKafkaProducer011<>(KAFKA_BROKER, KAFKA_TOPIC, new DataPointSerializationSchema()));
         //KafkaConsumer.main(new String[0]);
+
+
 
         //TODO Replace with Morse interpretation logic and sink to Influx as well
         // Compute a windowed sum over this data and write that to InfluxDB as well.
