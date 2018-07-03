@@ -1,7 +1,5 @@
 [![build status](https://gitlab.tubit.tu-berlin.de/anton.rudacov/DBPRO-IoT-Framework/badges/dev/build.svg)](https://gitlab.tubit.tu-berlin.de/anton.rudacov/DBPRO-IoT-Framework/commits/dev)  
 
-[![coverage report](https://gitlab.tubit.tu-berlin.de/anton.rudacov/DBPRO-IoT-Framework/badges/dev/coverage.svg)](https://gitlab.tubit.tu-berlin.de/anton.rudacov/DBPRO-IoT-Framework/commits/dev)
-
 
 # DBPRO IoT Framework
 
@@ -40,3 +38,8 @@ Development of an IoT framework for stream based analysis of sensor data. DBPRO,
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+
+
+## Acknowledgements
+
+Project structure and some implementations are inspired by [this awesome demonstration](https://youtu.be/fstKKxvY23c) by [Jamie Grier](https://github.com/jgrier).
