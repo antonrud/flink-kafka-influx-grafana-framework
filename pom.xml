@@ -12,10 +12,11 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <flink.version>1.4.2</flink.version>
-    <slf4j.version>1.7.7</slf4j.version>
+    <flink.version>1.5.0</flink.version>
+    <slf4j.version>1.7.19</slf4j.version>
     <log4j.version>1.2.17</log4j.version>
     <scala.binary.version>2.11</scala.binary.version>
+    <influxdb-client.version>2.10</influxdb-client.version>
   </properties>
 
   <repositories>
@@ -72,18 +73,6 @@
       <version>${flink.version}</version>
     </dependency>
 
-    <dependency>
-      <groupId>org.apache.flink</groupId>
-      <artifactId>flink-connector-kafka-0.11_2.11</artifactId>
-      <version>1.4.2</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.bahir</groupId>
-      <artifactId>flink-connector-influxdb_2.11</artifactId>
-      <version>1.1-SNAPSHOT</version>
-    </dependency>
-
     <!-- explicitly add a standard logging framework, as Flink does not have
         a hard dependency on one specific framework by default -->
     <dependency>
@@ -96,6 +85,25 @@
       <artifactId>log4j</artifactId>
       <version>${log4j.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-connector-kafka-0.11_2.11</artifactId>
+      <version>1.4.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.influxdb</groupId>
+      <artifactId>influxdb-java</artifactId>
+      <version>${influxdb-client.version}</version>
+    </dependency>
+
+    <!--
+    <dependency>
+      <groupId>org.apache.bahir</groupId>
+      <artifactId>flink-connector-influxdb_2.11</artifactId>
+      <version>1.1-SNAPSHOT</version>
+    </dependency>
+    -->
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -142,6 +150,16 @@
           <groupId>org.apache.flink</groupId>
           <artifactId>flink-connector-kafka-0.11_2.11</artifactId>
           <version>1.4.2</version>
+        </dependency>
+        <dependency>
+          <groupId>org.influxdb</groupId>
+          <artifactId>influxdb-java</artifactId>
+          <version>${influxdb-client.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.bahir</groupId>
+          <artifactId>flink-connector-influxdb_2.11</artifactId>
+          <version>1.1-SNAPSHOT</version>
         </dependency>
         <!-- Might not be useful here
         <dependency>
