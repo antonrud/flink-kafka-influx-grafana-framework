@@ -5,8 +5,6 @@
 
 Development of an IoT framework for stream based analysis of sensor data. DBPRO, TU Berlin, summer term 2018.
 
-* TODO: Thanks to Jamie Grier and https://github.com/dataArtisans/oscon
-
 (Original project home: [https://gitlab.tubit.tu-berlin.de/anton.rudacov/DBPRO-IoT-Framework](https://gitlab.tubit.tu-berlin.de/anton.rudacov/DBPRO-IoT-Framework))
  
   
@@ -40,3 +38,8 @@ Development of an IoT framework for stream based analysis of sensor data. DBPRO,
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+
+
+## Acknowledgements
+
+Project structure and some implementations are inspired by [this awesome demonstration](https://youtu.be/fstKKxvY23c) by [Jamie Grier](https://github.com/jgrier).
