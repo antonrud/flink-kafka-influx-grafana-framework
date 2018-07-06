@@ -2,6 +2,7 @@ package de.tuberlin.tubit.gitlab.anton.rudacov.jobs;
 
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.DataPointSerializationSchema;
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.KeyedDataPoint;
+import de.tuberlin.tubit.gitlab.anton.rudacov.functions.MorseWatermarkAssigner;
 import de.tuberlin.tubit.gitlab.anton.rudacov.sinks.InfluxDBSink;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.streaming.api.TimeCharacteristic;
@@ -44,6 +45,7 @@ public class KafkaConsumer implements Runnable {
 
         // Write this stream out to InfluxDB
         morseKafkaStream
+                .assignTimestampsAndWatermarks(new MorseWatermarkAssigner())
                 .addSink(new InfluxDBSink<>("kafkaMorse"));
 
         //TODO Replace with Morse interpretation logic and sink to Influx as well

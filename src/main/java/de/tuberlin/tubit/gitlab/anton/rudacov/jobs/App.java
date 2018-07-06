@@ -50,7 +50,6 @@ public class App {
 
         //Sink to Kafka
         morseStream
-                .assignTimestampsAndWatermarks(new MorseWatermarkAssigner())
                 .addSink(new FlinkKafkaProducer011<>(KAFKA_BROKER, KAFKA_TOPIC, new DataPointSerializationSchema()));
 
 
