@@ -3,9 +3,8 @@ package de.tuberlin.tubit.gitlab.anton.rudacov.jobs;
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.DataPoint;
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.KeyedDataPoint;
 import de.tuberlin.tubit.gitlab.anton.rudacov.functions.AssignKeyFunction;
-import de.tuberlin.tubit.gitlab.anton.rudacov.functions.MorseDTWFunction;
+import de.tuberlin.tubit.gitlab.anton.rudacov.functions.MorseWindowFunction;
 import de.tuberlin.tubit.gitlab.anton.rudacov.functions.ResistanceFunction;
-import de.tuberlin.tubit.gitlab.anton.rudacov.sinks.InfluxDBSink;
 import de.tuberlin.tubit.gitlab.anton.rudacov.sources.TimestampSource;
 import de.tuberlin.tubit.gitlab.anton.rudacov.tools.MeasurementDrop;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
@@ -47,7 +46,7 @@ public class App {
 
         // Writes sensor stream out to InfluxDB
         //morseStream
-          //      .addSink(new InfluxDBSink<>("morse"));
+        //      .addSink(new InfluxDBSink<>("morse"));
 
         //Sink to Kafka
         //morseStream
@@ -58,10 +57,9 @@ public class App {
         // Compute a windowed sum over this data and write that to InfluxDB as well.
         morseStream
                 .filter(keyedDataPoint -> keyedDataPoint.getValue() < 7500)
+                //.map(KeyedDataPoint::getTimeStampMs) //Get only the timestamps, where input actually happened
                 .windowAll(EventTimeSessionWindows.withGap(Time.seconds(2)))
-                //.sum("value")
-                //.addSink(new InfluxDBSink<>("summedSensors"));
-                .apply(new MorseDTWFunction());
+                .apply(new MorseWindowFunction());
 
         // Execute Flink
         env.execute("Morse code");
