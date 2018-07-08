@@ -26,7 +26,7 @@ public class DTWData {
         this.template.put(new float[]{811, 936, 936, 1030, 904}, 'O');
         this.template.put(new float[]{312, 749, 1030, 936, 967, 905, 187}, 'P');
         this.template.put(new float[]{1092, 718, 1248, 780, 187, 676, 1230}, 'Q');
-        this.template.put(new float[]{187, 1435, 1435, 1344, 150}, 'R');
+        this.template.put(new float[]{137, 1135, 1435, 1344, 150}, 'R');
         this.template.put(new float[]{281, 526, 353, 502, 376}, 'S');
         this.template.put(new float[]{1430}, 'T');
         this.template.put(new float[]{153, 551, 157, 887, 1311}, 'U');

@@ -3,6 +3,7 @@ package de.tuberlin.tubit.gitlab.anton.rudacov.jobs;
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.DataPoint;
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.KeyedDataPoint;
 import de.tuberlin.tubit.gitlab.anton.rudacov.functions.AssignKeyFunction;
+import de.tuberlin.tubit.gitlab.anton.rudacov.functions.MorseWindowFunction;
 import de.tuberlin.tubit.gitlab.anton.rudacov.functions.ResistanceFunction;
 import de.tuberlin.tubit.gitlab.anton.rudacov.sinks.InfluxDBSink;
 import de.tuberlin.tubit.gitlab.anton.rudacov.sources.TimestampSource;
@@ -14,6 +15,8 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.assigners.EventTimeSessionWindows;
+import org.apache.flink.streaming.api.windowing.time.Time;
 
 import java.util.Map;
 
@@ -60,10 +63,10 @@ public class App {
 
         //TODO Replace with Morse interpretation logic and sink to Influx as well
         // Compute a windowed sum over this data and write that to InfluxDB as well.
-/*        morseStream
+        morseStream
                 .filter(keyedDataPoint -> keyedDataPoint.getValue() < 7500)
                 .windowAll(EventTimeSessionWindows.withGap(Time.seconds(2)))
-                .process(new MorseWindowFunction());*/
+                .process(new MorseWindowFunction());
 
         // Execute Flink
         env.execute("Morse code");

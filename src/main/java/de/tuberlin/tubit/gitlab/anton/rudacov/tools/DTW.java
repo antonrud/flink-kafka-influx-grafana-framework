@@ -37,27 +37,39 @@ public class DTW {
     }
 
     public static void main(String[] args) {
+
+        // Just an example
         //float[] n2 = {1.5f, 3.9f, 4.1f, 3.3f};
         //float[] n1 = {2.1f, 2.45f, 3.673f, 4.32f, 2.05f, 1.93f, 5.67f, 6.01f};
+        //DTW dtw = new DTW(n1, n2);
+        //System.out.println(dtw);
 
-        float[] n1 = {187, 1498, 1279};
+//Uncomment this for debugging
+/**
+ ArrayList<Double> list = new ArrayList<>();
 
-        float[] n2 = {187, 1435, 1435};
-        float[] n3 = {873, 1404, 312, 531, 374, 593, 405};
-        float[] n4 = {1092, 1310, 811};
-        float[] n5 = {187, 686, 219};
+ for (Map.Entry<float[], Character> entry : App.DTW.entrySet()) {
 
-        DTW dtw = new DTW(n1, n2);
-        System.out.println(dtw);
+ for (Map.Entry<float[], Character> entry2 : App.DTW.entrySet()) {
 
-        DTW dtw2 = new DTW(n1, n3);
-        System.out.println(dtw2);
+ double distance = new DTW(entry.getKey(), entry2.getKey()).getDistance();
 
-        DTW dtw3 = new DTW(n1, n4);
-        System.out.println(dtw3);
+ System.out.println(distance);
+ list.add(distance);
 
-        DTW dtw4 = new DTW(n1, n5);
-        System.out.println(dtw4);
+ }
+
+ System.out.println();
+ System.out.println();
+ }
+
+ System.out.println();
+ System.out.println();
+ System.out.println();
+ System.out.println();
+
+ list.stream().sorted().forEach(System.out::println);
+ */
 
     }
 

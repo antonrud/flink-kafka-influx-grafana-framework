@@ -1,7 +1,13 @@
 package de.tuberlin.tubit.gitlab.anton.rudacov.tools;
 
 
-/* DO NOT ALTER THIS CLASS */
+/**
+ * DO NOT ALTER THIS CLASS
+ */
+
+/**
+ *  THIS CLASS IS CURRENTLY NOT IN USE
+ */
 
 public class MorseTree {
 

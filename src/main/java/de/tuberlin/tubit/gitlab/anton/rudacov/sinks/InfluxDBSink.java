@@ -29,7 +29,7 @@ public class InfluxDBSink<T extends DataPoint<? extends Number>> extends RichSin
         influxDB = InfluxDBFactory.connect("http://217.163.23.24:8086", "admin", "DBPROgruppe3");
         influxDB.setDatabase("morse");
         influxDB.enableBatch(BatchOptions.DEFAULTS);
-        influxDB.setLogLevel(InfluxDB.LogLevel.FULL);
+        influxDB.setLogLevel(InfluxDB.LogLevel.NONE);
     }
 
     @Override
