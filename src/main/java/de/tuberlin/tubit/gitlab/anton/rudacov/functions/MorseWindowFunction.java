@@ -1,6 +1,7 @@
 package de.tuberlin.tubit.gitlab.anton.rudacov.functions;
 
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.KeyedDataPoint;
+import de.tuberlin.tubit.gitlab.anton.rudacov.jobs.App;
 import de.tuberlin.tubit.gitlab.anton.rudacov.tools.DTW;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.flink.shaded.guava18.com.google.common.collect.Lists;
@@ -43,11 +44,15 @@ public class MorseWindowFunction extends ProcessAllWindowFunction<KeyedDataPoint
         //Prepare data for DTW evaluation
         float[] dtwData = ArrayUtils.toPrimitive(intervals.toArray(new Float[0]));
 
-        String character =
+        //Find similar pattern and return respective character
+        char character = App.dtw
+                .entrySet()
+                .stream()
+                .filter(x -> new DTW(dtwData, x.getKey()).getDistance() < 1) //TODO set appropriate threshold value
+                .findAny()
+                .get()
+                .getValue();
 
-        System.out.println("Detected: " + character);
-
-        //TODO Apply DTW on this.sequence
-
+        System.out.println("Detected: " + character + " at " + sequence.get(sequence.size() - 1)); //TODO Convert to human readable time
     }
 }
