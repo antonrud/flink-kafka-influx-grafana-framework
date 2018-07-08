@@ -37,7 +37,6 @@ public class MorseWindowFunction extends ProcessAllWindowFunction<KeyedDataPoint
             intervals.add(sequence.get(index) - sequence.get(index - 1));
         }
 
-
         sequence.forEach(System.out::println);
         intervals.forEach(System.out::println);
         System.out.println("---=== NEXT ===---");
