@@ -27,7 +27,7 @@ public class App {
     public static void main(String[] args) throws Exception {
 
         // Start Kafka consumer
-        new Thread(new KafkaConsumer()).start();
+        //new Thread(new KafkaConsumer()).start();
 
         // Drop previous measurements
         MeasurementDrop.drop("morse");
@@ -47,12 +47,12 @@ public class App {
         DataStream<KeyedDataPoint<Integer>> morseStream = generateSensorData(env);
 
         // Writes sensor stream out to InfluxDB
-        morseStream
-                .addSink(new InfluxDBSink<>("morse"));
+        //morseStream
+         //       .addSink(new InfluxDBSink<>("morse"));
 
         //Sink to Kafka
-        morseStream
-                .addSink(new FlinkKafkaProducer011<>(KAFKA_BROKER, KAFKA_TOPIC, new DataPointSerializationSchema()));
+        //morseStream
+         //       .addSink(new FlinkKafkaProducer011<>(KAFKA_BROKER, KAFKA_TOPIC, new DataPointSerializationSchema()));
 
 
         //TODO Replace with Morse interpretation logic and sink to Influx as well
@@ -60,7 +60,7 @@ public class App {
         morseStream
                 .filter(keyedDataPoint -> keyedDataPoint.getValue() < 7500)
                 .windowAll(EventTimeSessionWindows.withGap(Time.seconds(2)))
-                .apply(new MorseWindowFunction());
+                .process(new MorseWindowFunction());
 
         // Execute Flink
         env.execute("Morse code");
