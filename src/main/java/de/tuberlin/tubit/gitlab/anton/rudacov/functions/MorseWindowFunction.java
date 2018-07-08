@@ -10,6 +10,8 @@ import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Optional;
 
 public class MorseWindowFunction extends ProcessAllWindowFunction<KeyedDataPoint<Integer>, String, TimeWindow> {
 
@@ -42,17 +44,20 @@ public class MorseWindowFunction extends ProcessAllWindowFunction<KeyedDataPoint
         }
 
         //Prepare data for DTW evaluation
-        float[] dtwData = ArrayUtils.toPrimitive(intervals.toArray(new Float[0]));
+        float[] dtwSample = ArrayUtils.toPrimitive(intervals.toArray(new Float[0]));
 
         //Find similar pattern and return respective character
-        char character = App.dtw
+        Optional<Map.Entry<float[], Character>> character = App.DTW
                 .entrySet()
                 .stream()
-                .filter(x -> new DTW(dtwData, x.getKey()).getDistance() < 1) //TODO set appropriate threshold value
-                .findAny()
-                .get()
-                .getValue();
+                .filter(x -> new DTW(dtwSample, x.getKey()).getDistance() < App.DTW_SENSITIVITY)
+                .findAny();
 
-        System.out.println("Detected: " + character + " at " + sequence.get(sequence.size() - 1)); //TODO Convert to human readable time
+        //Output the result
+        if (character.isPresent()) {
+            System.out.println("Detected: " + character.get().getValue() + " at " + sequence.get(sequence.size() - 1)); //TODO Convert to human readable time
+        } else {
+            System.out.println("Unrecognized character at " + sequence.get(sequence.size() - 1));
+        }
     }
 }

@@ -3,8 +3,8 @@ package de.tuberlin.tubit.gitlab.anton.rudacov.jobs;
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.DataPoint;
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.KeyedDataPoint;
 import de.tuberlin.tubit.gitlab.anton.rudacov.functions.AssignKeyFunction;
-import de.tuberlin.tubit.gitlab.anton.rudacov.functions.MorseWindowFunction;
 import de.tuberlin.tubit.gitlab.anton.rudacov.functions.ResistanceFunction;
+import de.tuberlin.tubit.gitlab.anton.rudacov.sinks.InfluxDBSink;
 import de.tuberlin.tubit.gitlab.anton.rudacov.sources.TimestampSource;
 import de.tuberlin.tubit.gitlab.anton.rudacov.tools.DTWData;
 import de.tuberlin.tubit.gitlab.anton.rudacov.tools.MeasurementDrop;
@@ -14,14 +14,15 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.windowing.assigners.EventTimeSessionWindows;
-import org.apache.flink.streaming.api.windowing.time.Time;
 
 import java.util.Map;
 
 public class App {
 
-    public static final Map<float[], Character> dtw = new DTWData().getTemplate();
+    public static final Map<float[], Character> DTW = new DTWData().getTemplate();
+
+    //TODO set appropriate threshold value
+    public static final float DTW_SENSITIVITY = 10000;
 
     public static final String KAFKA_BROKER = "217.163.23.24:9092";
     public static final String KAFKA_TOPIC = "morse";
@@ -49,8 +50,8 @@ public class App {
         DataStream<KeyedDataPoint<Integer>> morseStream = generateSensorData(env);
 
         // Writes sensor stream out to InfluxDB
-        //morseStream
-        //       .addSink(new InfluxDBSink<>("morse"));
+        morseStream
+                .addSink(new InfluxDBSink<>("morse"));
 
         //Sink to Kafka
         //morseStream
@@ -59,10 +60,10 @@ public class App {
 
         //TODO Replace with Morse interpretation logic and sink to Influx as well
         // Compute a windowed sum over this data and write that to InfluxDB as well.
-        morseStream
+/*        morseStream
                 .filter(keyedDataPoint -> keyedDataPoint.getValue() < 7500)
                 .windowAll(EventTimeSessionWindows.withGap(Time.seconds(2)))
-                .process(new MorseWindowFunction());
+                .process(new MorseWindowFunction());*/
 
         // Execute Flink
         env.execute("Morse code");
