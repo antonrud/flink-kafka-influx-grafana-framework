@@ -1,6 +1,7 @@
 package de.tuberlin.tubit.gitlab.anton.rudacov.jobs;
 
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.DataPoint;
+import de.tuberlin.tubit.gitlab.anton.rudacov.data.DataPointSerializationSchema;
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.KeyedDataPoint;
 import de.tuberlin.tubit.gitlab.anton.rudacov.functions.AssignKeyFunction;
 import de.tuberlin.tubit.gitlab.anton.rudacov.functions.MorseWindowFunction;
@@ -17,6 +18,7 @@ import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.assigners.EventTimeSessionWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer011;
 
 import java.util.Map;
 
@@ -25,7 +27,7 @@ public class App {
     public static final Map<float[], Character> DTW = new DTWData().getTemplate();
 
     //TODO set appropriate threshold value
-    public static final float DTW_SENSITIVITY = 10000;
+    public static final float DTW_SENSITIVITY = 50000.0f;
 
     public static final String KAFKA_BROKER = "217.163.23.24:9092";
     public static final String KAFKA_TOPIC = "morse";
@@ -33,7 +35,7 @@ public class App {
     public static void main(String[] args) throws Exception {
 
         // Start Kafka consumer
-        //new Thread(new KafkaConsumer()).start();
+        new Thread(new KafkaConsumer()).start();
 
         // Drop previous measurements
         MeasurementDrop.drop("morse");
@@ -57,8 +59,8 @@ public class App {
                 .addSink(new InfluxDBSink<>("morse"));
 
         //Sink to Kafka
-        //morseStream
-        //       .addSink(new FlinkKafkaProducer011<>(KAFKA_BROKER, KAFKA_TOPIC, new DataPointSerializationSchema()));
+        morseStream
+                .addSink(new FlinkKafkaProducer011<>(KAFKA_BROKER, KAFKA_TOPIC, new DataPointSerializationSchema()));
 
 
         //TODO Replace with Morse interpretation logic and sink to Influx as well

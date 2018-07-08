@@ -10,8 +10,8 @@ import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public class MorseWindowFunction extends ProcessAllWindowFunction<KeyedDataPoint<Integer>, String, TimeWindow> {
 
@@ -46,6 +46,9 @@ public class MorseWindowFunction extends ProcessAllWindowFunction<KeyedDataPoint
         //Prepare data for DTW evaluation
         float[] dtwSample = ArrayUtils.toPrimitive(intervals.toArray(new Float[0]));
 
+
+/* Solution with threshold value
+
         //Find similar pattern and return respective character
         Optional<Map.Entry<float[], Character>> character = App.DTW
                 .entrySet()
@@ -55,9 +58,28 @@ public class MorseWindowFunction extends ProcessAllWindowFunction<KeyedDataPoint
 
         //Output the result
         if (character.isPresent()) {
-            System.out.println("Detected: " + character.get().getValue() + " at " + sequence.get(sequence.size() - 1)); //TODO Convert to human readable time
+            System.out.println("Detected: " + character.get().getValue() + " at " + sequence.get(sequence.size() - 1));
         } else {
             System.out.println("Unrecognized character at " + sequence.get(sequence.size() - 1));
         }
+*/
+
+        // Calculate DTW distances
+        Map<Double, Character> distances = new HashMap<>();
+        App.DTW
+                .entrySet()
+                .stream()
+                .forEach(x -> distances.put(new DTW(dtwSample, x.getKey()).getDistance(), x.getValue()));
+
+        // Get minimal distance
+        double minimalDistance = distances
+                .entrySet()
+                .stream()
+                .mapToDouble(x -> x.getKey())
+                .min()
+                .getAsDouble();
+
+        //TODO Convert to human readable time
+        System.out.println("Detected: " + distances.get(minimalDistance) + " at " + sequence.get(sequence.size() - 1));
     }
 }

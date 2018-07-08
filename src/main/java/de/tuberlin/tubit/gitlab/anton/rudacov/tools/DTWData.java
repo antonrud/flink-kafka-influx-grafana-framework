@@ -9,6 +9,33 @@ public class DTWData {
 
     public DTWData() {
 
+        this.template.put(new float[]{200, 800, 1200}, 'A');
+        this.template.put(new float[]{1200, 800, 200, 800, 200, 800, 200}, 'B');
+        this.template.put(new float[]{1200, 800, 200, 800, 1200, 800, 200}, 'C');
+        this.template.put(new float[]{1200, 800, 200, 800, 200}, 'D');
+        this.template.put(new float[]{200}, 'E');
+        this.template.put(new float[]{200, 800, 200, 800, 1200, 800, 200}, 'F');
+        this.template.put(new float[]{1200, 800, 1200, 800, 200}, 'G');
+        this.template.put(new float[]{200, 800, 200, 800, 200, 800, 200}, 'H');
+        this.template.put(new float[]{200, 800, 200}, 'I');
+        this.template.put(new float[]{200, 800, 1200, 800, 1200, 800, 1200}, 'J');
+        this.template.put(new float[]{1200, 800, 200, 800, 1200}, 'K');
+        this.template.put(new float[]{200, 800, 1200, 800, 200, 800, 200}, 'L');
+        this.template.put(new float[]{1200, 800, 1200}, 'M');
+        this.template.put(new float[]{1200, 800, 200}, 'N');
+        this.template.put(new float[]{1200, 800, 1200, 800, 1200}, 'O');
+        this.template.put(new float[]{200, 800, 1200, 800, 1200, 800, 200}, 'P');
+        this.template.put(new float[]{1200, 800, 1200, 800, 200, 800, 1200}, 'Q');
+        this.template.put(new float[]{200, 800, 1200, 800, 200}, 'R');
+        this.template.put(new float[]{200, 800, 200, 800, 200}, 'S');
+        this.template.put(new float[]{1200}, 'T');
+        this.template.put(new float[]{200, 800, 200, 800, 1200}, 'U');
+        this.template.put(new float[]{200, 800, 200, 800, 200, 800, 1200}, 'V');
+        this.template.put(new float[]{200, 800, 1200, 800, 1200}, 'W');
+        this.template.put(new float[]{1200, 800, 200, 800, 200, 800, 1200}, 'X');
+        this.template.put(new float[]{1200, 800, 200, 800, 1200, 800, 1200}, 'Y');
+        this.template.put(new float[]{1200, 800, 1200, 800, 200, 800, 200}, 'Z');
+
         this.template.put(new float[]{187, 1435, 1435}, 'A');
         this.template.put(new float[]{1154, 1623, 281, 530, 343, 499, 406}, 'B');
         this.template.put(new float[]{936, 1092, 156, 1061, 905, 686, 219}, 'C');

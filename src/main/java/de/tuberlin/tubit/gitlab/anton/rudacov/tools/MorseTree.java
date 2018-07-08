@@ -6,7 +6,7 @@ package de.tuberlin.tubit.gitlab.anton.rudacov.tools;
  */
 
 /**
- *  THIS CLASS IS CURRENTLY NOT IN USE
+ * THIS CLASS IS CURRENTLY NOT IN USE
  */
 
 public class MorseTree {
