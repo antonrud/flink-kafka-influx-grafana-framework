@@ -16,26 +16,30 @@ public class MorseWindowFunction extends ProcessAllWindowFunction<KeyedDataPoint
         ArrayList<Long> sequence = new ArrayList<>();
 
         //Convert to List for easier computation below
-        ArrayList<KeyedDataPoint<Integer>> valueList = Lists.newArrayList(elements);
+        ArrayList<KeyedDataPoint<Integer>> values = Lists.newArrayList(elements);
 
         //Add first timestamp to sequence
-        sequence.add(valueList.get(0).getTimeStampMs());
+        sequence.add(values.get(0).getTimeStampMs());
 
         //Find and add input interruption points
-        for (int index = 1; index < valueList.size(); index++) {
-            if (valueList.get(index).getTimeStampMs() - valueList.get(index - 1).getTimeStampMs() > 40) {
-                sequence.add(valueList.get(index - 1).getTimeStampMs());
-                sequence.add(valueList.get(index).getTimeStampMs());
+        for (int index = 1; index < values.size(); index++) {
+            if (values.get(index).getTimeStampMs() - values.get(index - 1).getTimeStampMs() > 40) {
+                sequence.add(values.get(index - 1).getTimeStampMs());
+                sequence.add(values.get(index).getTimeStampMs());
             }
         }
 
         //Add last timestamp to sequence
-        sequence.add(valueList.get(valueList.size() - 1).getTimeStampMs());
+        sequence.add(values.get(values.size() - 1).getTimeStampMs());
 
-        
+        ArrayList<Long> intervals = new ArrayList<>();
+        for (int index = 1; index < sequence.size(); index++) {
+            intervals.add(sequence.get(index) - sequence.get(index - 1));
+        }
 
 
         sequence.forEach(System.out::println);
+        intervals.forEach(System.out::println);
         System.out.println("---=== NEXT ===---");
         //TODO Apply DTW on this.sequence
 
