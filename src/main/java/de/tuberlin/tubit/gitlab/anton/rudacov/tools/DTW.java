@@ -8,27 +8,20 @@ package de.tuberlin.tubit.gitlab.anton.rudacov.tools;
  *   Y = y1, y2,..., yj,..., ym
  *  </pre>
  *
- * @author		Cheol-Woo Jung (cjung@gatech.edu)
- * @version	1.0
+ * @author Cheol-Woo Jung (cjung@gatech.edu)
+ * @version 1.0
  */
 public class DTW {
 
-    protected float[] seq1;
-    protected float[] seq2;
-    protected int[][] warpingPath;
-
-    protected int n;
     protected int m;
-    protected int K;
+    private float[] seq1;
+    private float[] seq2;
+    private int[][] warpingPath;
+    private int n;
+    private int K;
 
-    protected double warpingDistance;
+    private double warpingDistance;
 
-    /**
-     * Constructor
-     *
-     * @param query
-     * @param templete
-     */
     public DTW(float[] sample, float[] templete) {
         seq1 = sample;
         seq2 = templete;
@@ -37,17 +30,42 @@ public class DTW {
         m = seq2.length;
         K = 1;
 
-        warpingPath = new int[n + m][2];	// max(n, m) <= K < n + m
+        warpingPath = new int[n + m][2];    // max(n, m) <= K < n + m
         warpingDistance = 0.0;
 
         this.compute();
     }
 
-    public void compute() {
+    public static void main(String[] args) {
+        //float[] n2 = {1.5f, 3.9f, 4.1f, 3.3f};
+        //float[] n1 = {2.1f, 2.45f, 3.673f, 4.32f, 2.05f, 1.93f, 5.67f, 6.01f};
+
+        float[] n1 = {187, 1498, 1279};
+
+        float[] n2 = {187, 1435, 1435};
+        float[] n3 = {873, 1404, 312, 531, 374, 593, 405};
+        float[] n4 = {1092, 1310, 811};
+        float[] n5 = {187, 686, 219};
+
+        DTW dtw = new DTW(n1, n2);
+        System.out.println(dtw);
+
+        DTW dtw2 = new DTW(n1, n3);
+        System.out.println(dtw2);
+
+        DTW dtw3 = new DTW(n1, n4);
+        System.out.println(dtw3);
+
+        DTW dtw4 = new DTW(n1, n5);
+        System.out.println(dtw4);
+
+    }
+
+    private void compute() {
         double accumulatedDistance = 0.0;
 
-        double[][] d = new double[n][m];	// local distances
-        double[][] D = new double[n][m];	// global distances
+        double[][] d = new double[n][m];    // local distances
+        double[][] D = new double[n][m];    // global distances
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
@@ -67,7 +85,7 @@ public class DTW {
 
         for (int i = 1; i < n; i++) {
             for (int j = 1; j < m; j++) {
-                accumulatedDistance = Math.min(Math.min(D[i-1][j], D[i-1][j-1]), D[i][j-1]);
+                accumulatedDistance = Math.min(Math.min(D[i - 1][j], D[i - 1][j - 1]), D[i][j - 1]);
                 accumulatedDistance += d[i][j];
                 D[i][j] = accumulatedDistance;
             }
@@ -86,8 +104,8 @@ public class DTW {
                 j -= 1;
             } else if (j == 0) {
                 i -= 1;
-            } else {	// i != 0 && j != 0
-                double[] array = { D[i - 1][j], D[i][j - 1], D[i - 1][j - 1] };
+            } else {    // i != 0 && j != 0
+                double[] array = {D[i - 1][j], D[i][j - 1], D[i - 1][j - 1]};
                 minIndex = this.getIndexOfMinimum(array);
 
                 if (minIndex == 0) {
@@ -111,9 +129,9 @@ public class DTW {
     /**
      * Changes the order of the warping path (increasing order)
      *
-     * @param path	the warping path in reverse order
+     * @param path the warping path in reverse order
      */
-    protected void reversePath(int[][] path) {
+    private void reversePath(int[][] path) {
         int[][] newPath = new int[K][2];
         for (int i = 0; i < K; i++) {
             for (int j = 0; j < 2; j++) {
@@ -122,6 +140,7 @@ public class DTW {
         }
         warpingPath = newPath;
     }
+
     /**
      * Returns the warping distance
      *
@@ -134,21 +153,21 @@ public class DTW {
     /**
      * Computes a distance between two points
      *
-     * @param p1	the point 1
-     * @param p2	the point 2
-     * @return		the distance between two points
+     * @param p1 the point 1
+     * @param p2 the point 2
+     * @return the distance between two points
      */
-    protected double distanceBetween(double p1, double p2) {
+    private double distanceBetween(double p1, double p2) {
         return (p1 - p2) * (p1 - p2);
     }
 
     /**
      * Finds the index of the minimum element from the given array
      *
-     * @param array		the array containing numeric values
-     * @return				the min value among elements
+     * @param array the array containing numeric values
+     * @return the min value among elements
      */
-    protected int getIndexOfMinimum(double[] array) {
+    private int getIndexOfMinimum(double[] array) {
         int index = 0;
         double val = array[0];
 
@@ -162,28 +181,17 @@ public class DTW {
     }
 
     /**
-     *	Returns a string that displays the warping distance and path
+     * Returns a string that displays the warping distance and path
      */
     public String toString() {
         String retVal = "Warping Distance: " + warpingDistance + "\n";
         retVal += "Warping Path: {";
         for (int i = 0; i < K; i++) {
-            retVal += "(" + warpingPath[i][0] + ", " +warpingPath[i][1] + ")";
+            retVal += "(" + warpingPath[i][0] + ", " + warpingPath[i][1] + ")";
             retVal += (i == K - 1) ? "}" : ", ";
 
         }
-        return retVal;
-    }
 
-    /**
-     * Tests this class
-     *
-     * @param args	ignored
-     */
-    public static void main(String[] args) {
-        float[] n2 = {1.5f, 3.9f, 4.1f, 3.3f};
-        float[] n1 = {2.1f, 2.45f, 3.673f, 4.32f, 2.05f, 1.93f, 5.67f, 6.01f};
-        DTW dtw = new DTW(n1, n2);
-        System.out.println(dtw);
+        return retVal;
     }
 }

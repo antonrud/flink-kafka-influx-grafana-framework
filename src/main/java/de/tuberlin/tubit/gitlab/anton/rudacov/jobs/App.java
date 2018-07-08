@@ -1,13 +1,12 @@
 package de.tuberlin.tubit.gitlab.anton.rudacov.jobs;
 
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.DataPoint;
-import de.tuberlin.tubit.gitlab.anton.rudacov.data.DataPointSerializationSchema;
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.KeyedDataPoint;
 import de.tuberlin.tubit.gitlab.anton.rudacov.functions.AssignKeyFunction;
 import de.tuberlin.tubit.gitlab.anton.rudacov.functions.MorseWindowFunction;
 import de.tuberlin.tubit.gitlab.anton.rudacov.functions.ResistanceFunction;
-import de.tuberlin.tubit.gitlab.anton.rudacov.sinks.InfluxDBSink;
 import de.tuberlin.tubit.gitlab.anton.rudacov.sources.TimestampSource;
+import de.tuberlin.tubit.gitlab.anton.rudacov.tools.DTWData;
 import de.tuberlin.tubit.gitlab.anton.rudacov.tools.MeasurementDrop;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.streaming.api.TimeCharacteristic;
@@ -17,9 +16,12 @@ import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.assigners.EventTimeSessionWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
-import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer011;
+
+import java.util.Map;
 
 public class App {
+
+    public static final Map<float[], Character> dtw = new DTWData().getTemplate();
 
     public static final String KAFKA_BROKER = "217.163.23.24:9092";
     public static final String KAFKA_TOPIC = "morse";
@@ -48,11 +50,11 @@ public class App {
 
         // Writes sensor stream out to InfluxDB
         //morseStream
-         //       .addSink(new InfluxDBSink<>("morse"));
+        //       .addSink(new InfluxDBSink<>("morse"));
 
         //Sink to Kafka
         //morseStream
-         //       .addSink(new FlinkKafkaProducer011<>(KAFKA_BROKER, KAFKA_TOPIC, new DataPointSerializationSchema()));
+        //       .addSink(new FlinkKafkaProducer011<>(KAFKA_BROKER, KAFKA_TOPIC, new DataPointSerializationSchema()));
 
 
         //TODO Replace with Morse interpretation logic and sink to Influx as well

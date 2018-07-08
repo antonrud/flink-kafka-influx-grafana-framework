@@ -1,6 +1,8 @@
 package de.tuberlin.tubit.gitlab.anton.rudacov.functions;
 
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.KeyedDataPoint;
+import de.tuberlin.tubit.gitlab.anton.rudacov.tools.DTW;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.flink.shaded.guava18.com.google.common.collect.Lists;
 import org.apache.flink.streaming.api.functions.windowing.ProcessAllWindowFunction;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
@@ -32,14 +34,19 @@ public class MorseWindowFunction extends ProcessAllWindowFunction<KeyedDataPoint
         //Add last timestamp to sequence
         sequence.add(values.get(values.size() - 1).getTimeStampMs());
 
-        ArrayList<Long> intervals = new ArrayList<>();
+        //Convert absolute timestamps to relative time intervals
+        ArrayList<Float> intervals = new ArrayList<>();
         for (int index = 1; index < sequence.size(); index++) {
-            intervals.add(sequence.get(index) - sequence.get(index - 1));
+            intervals.add((float) (sequence.get(index) - sequence.get(index - 1)));
         }
 
-        sequence.forEach(System.out::println);
-        intervals.forEach(System.out::println);
-        System.out.println("---=== NEXT ===---");
+        //Prepare data for DTW evaluation
+        float[] dtwData = ArrayUtils.toPrimitive(intervals.toArray(new Float[0]));
+
+        String character =
+
+        System.out.println("Detected: " + character);
+
         //TODO Apply DTW on this.sequence
 
     }
