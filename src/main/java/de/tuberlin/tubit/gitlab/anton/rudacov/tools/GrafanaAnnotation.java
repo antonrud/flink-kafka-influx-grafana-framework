@@ -26,9 +26,9 @@ public class GrafanaAnnotation {
 
         data.put("dashboardId", this.GRAFANA_DASHBOARDID);
         data.put("panelId", this.GRAFANA_PANELID);
-        data.put("time", startTime);
+        data.put("time", startTime - 500);
         data.put("isRegion", true);
-        data.put("timeEnd", endTime + 500);
+        data.put("timeEnd", endTime + 1000);
         data.put("tags", new JSONArray("[" + this.GRAFANA_TAG + "]"));
         data.put("text", text);
 

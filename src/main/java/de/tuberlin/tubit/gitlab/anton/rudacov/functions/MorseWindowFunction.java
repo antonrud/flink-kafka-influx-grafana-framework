@@ -80,6 +80,7 @@ public class MorseWindowFunction extends ProcessAllWindowFunction<KeyedDataPoint
                 .min()
                 .getAsDouble();
 
+        // Send annotation to Grafana
         new GrafanaAnnotation(distances.get(minimalDistance).toString(), sequence.get(0), sequence.get(sequence.size() - 1));
 
         //TODO Convert to human readable time
