@@ -3,6 +3,7 @@ package de.tuberlin.tubit.gitlab.anton.rudacov.functions;
 import de.tuberlin.tubit.gitlab.anton.rudacov.data.KeyedDataPoint;
 import de.tuberlin.tubit.gitlab.anton.rudacov.jobs.App;
 import de.tuberlin.tubit.gitlab.anton.rudacov.tools.DTW;
+import de.tuberlin.tubit.gitlab.anton.rudacov.tools.GrafanaAnnotation;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.flink.shaded.guava18.com.google.common.collect.Lists;
 import org.apache.flink.streaming.api.functions.windowing.ProcessAllWindowFunction;
@@ -78,6 +79,8 @@ public class MorseWindowFunction extends ProcessAllWindowFunction<KeyedDataPoint
                 .mapToDouble(x -> x.getKey())
                 .min()
                 .getAsDouble();
+
+        new GrafanaAnnotation(distances.get(minimalDistance).toString(), sequence.get(0), sequence.get(sequence.size() - 1));
 
         //TODO Convert to human readable time
         System.out.println("Detected: " + distances.get(minimalDistance) + " at " + sequence.get(sequence.size() - 1));

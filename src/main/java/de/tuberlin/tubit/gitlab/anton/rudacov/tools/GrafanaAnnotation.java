@@ -18,7 +18,7 @@ public class GrafanaAnnotation {
     private final String GRAFANA_PASS = "DBPROgruppe3";
     private final int GRAFANA_DASHBOARDID = 4;
     private final int GRAFANA_PANELID = 2;
-    private final String GRAFANA_TAG = "Resistance";
+    private final String GRAFANA_TAG = "character";
 
     public GrafanaAnnotation(String text, long startTime, long endTime) {
 
@@ -28,7 +28,7 @@ public class GrafanaAnnotation {
         data.put("panelId", this.GRAFANA_PANELID);
         data.put("time", startTime);
         data.put("isRegion", true);
-        data.put("timeEnd", endTime);
+        data.put("timeEnd", endTime + 500);
         data.put("tags", new JSONArray("[" + this.GRAFANA_TAG + "]"));
         data.put("text", text);
 
