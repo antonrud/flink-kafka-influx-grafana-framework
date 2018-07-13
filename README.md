@@ -10,13 +10,22 @@ Development of an IoT framework for stream based analysis of sensor data. DBPRO,
   
 ## Features
 
-* TODO
- 
+This application is an example of basic Flink-Kafka-InfluxDB workflow.
+
+The program performs following steps:
+* generates a stream of timestamps and attaches data to it (captured before from a sensor).
+* sinks stream data to InfluxDB and to a Kafka topic
+* consumes data from Kafka topic (in another thread) and sinks it to InfluxDB as well
+* splits infinite stream in windows and calculates "Dynamic Time Warping" distances in order to recognise the input
+* adds annotations containing recognised character to Grafana via HTTP request 
+
  
 ## How to use
 
-* TODO
- 
+Just run the *main()* method in **jobs/App.java**
+
+In order to actually get any observable output you have to run the necessary instances (Kafka, InfluxDB, Grafana) and setup their addresses in corresponding java classes.
+
  
 ## Built With
 

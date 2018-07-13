@@ -9,7 +9,6 @@ package de.tuberlin.tubit.gitlab.anton.rudacov.tools;
  *  </pre>
  *
  * @author Cheol-Woo Jung (cjung@gatech.edu)
- * @version 1.0
  */
 public class DTW {
 
@@ -23,6 +22,8 @@ public class DTW {
     private double warpingDistance;
 
     public DTW(float[] sample, float[] templete) {
+
+        // DTW computation only makes sense if the amount of intervals is the same
         if (sample.length == templete.length) {
 
             seq1 = sample;
