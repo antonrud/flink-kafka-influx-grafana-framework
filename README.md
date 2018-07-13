@@ -43,3 +43,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgements
 
 Project structure and some implementations are inspired by [this awesome demonstration](https://youtu.be/fstKKxvY23c) by [Jamie Grier](https://github.com/jgrier).
+
+Dynamic Time Warping algorithm is created by [Cheol-Woo Jung](mailto:cjung@gatech.edu) (browse [source](http://trac.research.cc.gatech.edu/GART/browser/GART/weka/edu/gatech/gart/ml/weka/DTW.java?rev=9)).
