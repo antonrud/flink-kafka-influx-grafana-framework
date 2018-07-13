@@ -49,7 +49,7 @@ public class KafkaConsumer implements Runnable {
                 .addSink(new InfluxDBSink<>("kafkaMorse"));
 
         //TODO Replace with Morse interpretation logic and sink to Influx as well
-        // Compute a windowed sum over this data and write that to InfluxDB as well.
+        // Perform DTW
         /* morseKafkaStream
                 .keyBy("key")
                 .timeWindow(Time.seconds(1))

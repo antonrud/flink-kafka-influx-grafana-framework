@@ -62,9 +62,7 @@ public class App {
         morseStream
                 .addSink(new FlinkKafkaProducer011<>(KAFKA_BROKER, KAFKA_TOPIC, new DataPointSerializationSchema()));
 
-
-        //TODO Replace with Morse interpretation logic and sink to Influx as well
-        // Compute a windowed sum over this data and write that to InfluxDB as well.
+        // Perform DTW
         morseStream
                 .filter(keyedDataPoint -> keyedDataPoint.getValue() < 7500)
                 .windowAll(EventTimeSessionWindows.withGap(Time.seconds(2)))
