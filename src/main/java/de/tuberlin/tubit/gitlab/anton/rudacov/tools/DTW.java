@@ -23,17 +23,23 @@ public class DTW {
     private double warpingDistance;
 
     public DTW(float[] sample, float[] templete) {
-        seq1 = sample;
-        seq2 = templete;
+        if (sample.length == templete.length) {
 
-        n = seq1.length;
-        m = seq2.length;
-        K = 1;
+            seq1 = sample;
+            seq2 = templete;
 
-        warpingPath = new int[n + m][2];    // max(n, m) <= K < n + m
-        warpingDistance = 0.0;
+            n = seq1.length;
+            m = seq2.length;
+            K = 1;
 
-        this.compute();
+            warpingPath = new int[n + m][2];    // max(n, m) <= K < n + m
+            warpingDistance = 0.0;
+
+            this.compute();
+        } else {
+
+            this.warpingDistance = Double.MAX_VALUE;
+        }
     }
 
     public static void main(String[] args) {
