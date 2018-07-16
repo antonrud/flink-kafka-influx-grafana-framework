@@ -1,6 +1,3 @@
-[![build status](https://gitlab.tubit.tu-berlin.de/anton.rudacov/DBPRO-IoT-Framework/badges/dev/build.svg)](https://gitlab.tubit.tu-berlin.de/anton.rudacov/DBPRO-IoT-Framework/commits/dev)  
-
-
 # DBPRO IoT Framework
 
 Development of an IoT framework for stream based analysis of sensor data. DBPRO, TU Berlin, summer term 2018.
